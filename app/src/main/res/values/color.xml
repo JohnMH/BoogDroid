@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="darkBGSecondary">#424242</color>
+    <color name="darkBG">#212121</color>
+
+    <color name="textSecondary">#B2FFFFFF</color>
+    <color name="textTertiary">#7FFFFFFF</color>
+</resources>

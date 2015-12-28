@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.BugsControl" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.BoogDroid" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Main theme colors -->
         <!--   your app branding color for the app bar -->
-        <item name="colorPrimary">#673AB7</item>
+        <item name="colorPrimary">#212121</item>
         <!--   darker variant for the status bar and contextual app bars -->
-        <item name="colorPrimaryDark">#512DA8</item>
+        <item name="colorPrimaryDark">#212121</item>
         <!--   theme UI controls like checkboxes and text fields -->
-        <item name="colorAccent">#40C4FF</item>
+        <item name="colorAccent">#8A0829</item>
+
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textColorSecondary">#B2FFFFFF</item>
+        <item name="android:textColorTertiary">#4CFFFFFF</item>
+        <item name="android:windowBackground">@color/darkBG</item>
     </style>
 
-    <style name="Theme.BugsControl.NoActionBar" parent="Theme.BugsControl">
+    <style name="Theme.BoogDroid.NoActionBar" parent="Theme.BoogDroid">
         <item name="windowActionBar">false</item>
     </style>
-
 </resources>

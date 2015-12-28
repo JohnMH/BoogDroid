@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,22 +23,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="2dp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:layout_alignParentRight="true"/>
         </android.support.v7.widget.Toolbar>
 
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-5159341406323564/4902903716" />
-
+            android:layout_weight="1"
+            android:background="@color/darkBGSecondary" />
     </LinearLayout>
 
     <FrameLayout
@@ -50,7 +43,7 @@
         android:background="#FFFFFF">
 
         <fragment
-            android:name="jp.bugscontrol.ui.LeftMenuFragment"
+            android:name="me.johnmh.boogdroid.ui.LeftMenuFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>

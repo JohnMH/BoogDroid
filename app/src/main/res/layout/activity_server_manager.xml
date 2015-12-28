@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/server_manager_frag"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <fragment
-        android:name="jp.bugscontrol.ui.ServerListFragment"
+        android:name="me.johnmh.boogdroid.ui.ServerListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 </RelativeLayout>

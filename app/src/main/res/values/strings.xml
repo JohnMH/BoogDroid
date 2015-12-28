@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- GENERAL -->
-    <string name="app_name">BugsControl</string>
+    <string name="app_name">BoogDroid</string>
     <string name="no_items">No elements.</string>
     <string name="invalid_product">Invalid product</string>
     <string name="invalid_bug">Invalid bug</string>
@@ -27,5 +26,4 @@
     <string name="reporter">Reporter</string>
     <string name="assignee">Assignee</string>
     <string name="author">Author</string>
-
 </resources>

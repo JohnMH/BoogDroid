@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp">
-
     <TextView
         android:id="@+id/summary"
         android:layout_width="match_parent"
@@ -38,7 +37,5 @@
             android:singleLine="true"
             android:textIsSelectable="false"
             android:textSize="14sp" />
-
     </LinearLayout>
-
 </LinearLayout>
