@@ -1,1 +1,1 @@
-# BugsControl  [![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=jp.bugscontrol) [![Build Status](https://travis-ci.org/jonanp/BugsControl.svg?branch=master)](https://travis-ci.org/jonanp/BugsControl)
+# BoogDroid  [![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=me.johnmh.boogdroid) [![Build Status](https://travis-ci.org/JohnMHarrisJr/BoogDroid.svg?branch=master)](https://travis-ci.org/JohnMHarrisJr/BoogDroid)
