@@ -19,6 +19,7 @@
 package me.johnmh.boogdroid.bugzilla;
 
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
@@ -28,8 +29,14 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
+import de.timroes.axmlrpc.XMLRPCClient;
+import de.timroes.axmlrpc.XMLRPCException;
 import me.johnmh.boogdroid.general.Server;
 import me.johnmh.util.Util.TaskListener;
 
@@ -40,6 +47,7 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
 
     private TaskListener listener;
 
+    private Object implementation;
     private Server server;
 
     public BugzillaTask(final Server server, final String method, final TaskListener listener) {
@@ -58,6 +66,60 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(final Void... p) {
+//        return jsonImplementation();
+        return xmlImplementation();
+    }
+
+    @Nullable
+    private Void xmlImplementation() {
+        XMLRPCClient client = null;
+        try {
+            client = new XMLRPCClient(new URL(server.getUrl()+"/xmlrpc.cgi"));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        HashMap<String, Object> args = new HashMap<>();
+        args.put("login", server.getName());
+        args.put("password", server.getPassword());
+        try {
+            Object response = client.call(method, new Object[]{args});
+            listener.doInBackground(response.toString());
+        } catch (XMLRPCException e) {
+            e.printStackTrace();
+        }
+
+//        XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
+//        URL url = null;
+//        try {
+//            url = new URL(server.getUrl() + "/xmlrpc.cgi");
+//            if(url.getHost() == null)
+//                throw new MalformedURLException();
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        }
+//        config.setServerURL(url);
+//        XmlRpcClient client = new XmlRpcClient();
+//        XmlRpcCommonsTransportFactory transportFactory = new XmlRpcCommonsTransportFactory(client);
+//        // set the HttpClient so that we retain cookies
+//      //  transportFactory.setHttpClient(HttpClient.get );
+//        client.setTransportFactory(transportFactory);
+//        client.setConfig(config);
+//
+//        HashMap<String, Object> args = new HashMap<>();
+//        args.put("login", server.getName());
+//        args.put("password", server.getPassword());
+//        HashMap<String, Object> result = null;
+//        try {
+//            result = (HashMap<String, Object>) client.execute(method, new Object[]{args});
+//        } catch (XmlRpcException e) {
+//            e.printStackTrace();
+//        }
+        return null;
+    }
+
+    @Nullable
+    private Void jsonImplementation() {
         try {
             // Add login info if needed
             if (server.hasUser()) {
