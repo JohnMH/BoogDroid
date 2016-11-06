@@ -24,9 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.johnmh.boogdroid.ui.AdapterBug;
+import me.johnmh.util.Util;
 
 public abstract class Product {
-    protected final Server server;
+    protected Server server;
 
     protected int id;
     protected String name;
@@ -36,10 +37,6 @@ public abstract class Product {
 
     private AdapterBug adapter;
     private ActionBarActivity activity;
-
-    public Product(Server server) {
-        this.server = server;
-    }
 
     protected abstract void loadBugs();
 
@@ -86,5 +83,9 @@ public abstract class Product {
 
     public void clearBugs() {
         bugs.clear();
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
     }
 }

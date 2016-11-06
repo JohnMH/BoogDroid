@@ -21,18 +21,26 @@ package me.johnmh.boogdroid.bugzilla;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import de.timroes.axmlrpc.XMLRPCClient;
@@ -43,18 +51,14 @@ import me.johnmh.util.Util.TaskListener;
 public class BugzillaTask extends AsyncTask<Void, Void, Void> {
     private final String method;
     private String params;
-    private String response;
+    private Object response;
 
     private TaskListener listener;
 
-    private Object implementation;
     private Server server;
 
     public BugzillaTask(final Server server, final String method, final TaskListener listener) {
-        this.server = server;
-        this.method = method;
-        this.params = "";
-        this.listener = listener;
+        this(server, method, "", listener);
     }
 
     public BugzillaTask(final Server server, final String method, final String params, final TaskListener listener) {
@@ -66,12 +70,15 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(final Void... p) {
-//        return jsonImplementation();
-        return xmlImplementation();
+        if (server.isUseJson()) {
+           return doJsonImplementation();
+        } else {
+            return doXmlImplementation();
+        }
     }
 
     @Nullable
-    private Void xmlImplementation() {
+    private Void doXmlImplementation() {
         XMLRPCClient client = null;
         try {
             client = new XMLRPCClient(new URL(server.getUrl()+"/xmlrpc.cgi"));
@@ -79,16 +86,28 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
         }
 
-        HashMap<String, Object> args = new HashMap<>();
-        args.put("login", server.getName());
-        args.put("password", server.getPassword());
+        Map<String, Object> args = null;
         try {
-            Object response = client.call(method, new Object[]{args});
-            listener.doInBackground(response.toString());
+//            Type type = new TypeToken<HashMap<String, Object>>() {}.getType();
+//            args = new Gson().fromJson(params, type);
+            if (params == null || params.equals("")){
+                args = new HashMap<>();
+            } else {
+                args = jsonToMap(new JSONObject("{"+params+"}"));
+            }
+            args.put("Bugzilla_login", server.getUser());
+            args.put("Bugzilla_password", server.getPassword());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            response = client.call(method, args == null ? null : new Object[]{args});
         } catch (XMLRPCException e) {
             e.printStackTrace();
         }
 
+        //Implementation on apache (not usable because package names (core library)
 //        XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
 //        URL url = null;
 //        try {
@@ -115,11 +134,57 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
 //        } catch (XmlRpcException e) {
 //            e.printStackTrace();
 //        }
+        listener.doInBackground(response);
         return null;
     }
 
+    public static Map<String, Object> jsonToMap(JSONObject json) throws JSONException {
+        Map<String, Object> retMap = new HashMap<>();
+
+        if(json != JSONObject.NULL) {
+            retMap = toMap(json);
+        }
+        return retMap;
+    }
+
+    public static Map<String, Object> toMap(JSONObject object) throws JSONException {
+        Map<String, Object> map = new HashMap<>();
+
+        Iterator<String> keysItr = object.keys();
+        while(keysItr.hasNext()) {
+            String key = keysItr.next();
+            Object value = object.get(key);
+
+            if(value instanceof JSONArray) {
+                value = toList((JSONArray) value);
+            }
+
+            else if(value instanceof JSONObject) {
+                value = toMap((JSONObject) value);
+            }
+            map.put(key, value);
+        }
+        return map;
+    }
+
+    public static List<Object> toList(JSONArray array) throws JSONException {
+        List<Object> list = new ArrayList<>();
+        for(int i = 0; i < array.length(); i++) {
+            Object value = array.get(i);
+            if(value instanceof JSONArray) {
+                value = toList((JSONArray) value);
+            }
+
+            else if(value instanceof JSONObject) {
+                value = toMap((JSONObject) value);
+            }
+            list.add(value);
+        }
+        return list;
+    }
+
     @Nullable
-    private Void jsonImplementation() {
+    private Void doJsonImplementation() {
         try {
             // Add login info if needed
             if (server.hasUser()) {

@@ -39,6 +39,7 @@ public abstract class Server {
 
     protected final List<Product> products = new ArrayList<Product>();
     protected final String type;
+    protected boolean jsonImplementation;
     protected String name;
     protected String url;
     protected String user;
@@ -49,12 +50,13 @@ public abstract class Server {
 
     private me.johnmh.boogdroid.db.Server databaseServer = null;
 
-    public Server(final String name, final String url, final String type) {
+    public Server(final String name, final String url, final String type, boolean jsonImplementation) {
         this.type = type;
         this.name = name;
         this.url = url;
         user = "";
         password = "";
+        this.jsonImplementation = jsonImplementation;
     }
 
     public Server(final me.johnmh.boogdroid.db.Server server) {
@@ -64,6 +66,7 @@ public abstract class Server {
         url = server.url;
         user = server.user;
         password = server.password;
+        jsonImplementation = server.json == null ? false : server.json;
     }
 
     public void setName(final String name) {
@@ -151,6 +154,10 @@ public abstract class Server {
         return password;
     }
 
+    public Boolean isUseJson() {
+        return jsonImplementation;
+    }
+
     public boolean hasUser() {
         return !TextUtils.isEmpty(user);
     }
@@ -160,5 +167,9 @@ public abstract class Server {
     protected void productsListUpdated() {
         adapter.notifyDataSetChanged();
         activity.setSupportProgressBarIndeterminateVisibility(false);
+    }
+
+    public void setUseJson(Boolean useJson) {
+        this.jsonImplementation = useJson;
     }
 }

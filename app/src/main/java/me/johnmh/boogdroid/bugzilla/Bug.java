@@ -26,14 +26,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.johnmh.boogdroid.general.*;
 import me.johnmh.util.Util;
 import me.johnmh.util.Util.TaskListener;
 
 public class Bug extends me.johnmh.boogdroid.general.Bug {
-    public Bug(final me.johnmh.boogdroid.general.Product product, final JSONObject json) {
-        super(product);
-        createFromJSON(json);
-    }
 
     @Override
     protected void loadComments() {
@@ -41,9 +38,9 @@ public class Bug extends me.johnmh.boogdroid.general.Bug {
         final List<me.johnmh.boogdroid.general.Comment> newList = new ArrayList<me.johnmh.boogdroid.general.Comment>();
         final BugzillaTask task = new BugzillaTask(product.getServer(), "Bug.comments", "'ids':[" + b.id + "]", new TaskListener() {
             @Override
-            public void doInBackground(final String s) {
+            public void doInBackground(final Object response) {
                 try {
-                    final JSONObject object = new JSONObject(s);
+                    final JSONObject object = new JSONObject(response.toString());
                     final JSONArray comments = object.getJSONObject("result").getJSONObject("bugs").getJSONObject(Integer.toString(b.id)).getJSONArray("comments");
                     final int size = comments.length();
                     for (int i = 0; i < size; ++i) {
@@ -59,27 +56,12 @@ public class Bug extends me.johnmh.boogdroid.general.Bug {
             }
 
             @Override
-            public void onPostExecute(final String s) {
+            public void onPostExecute(final Object response) {
                 comments.clear();
                 comments.addAll(newList);
                 commentsListUpdated();
             }
         });
         task.execute();
-    }
-
-    private void createFromJSON(final JSONObject json) {
-        try {
-            id = json.getInt("id");
-            summary = json.getString("summary");
-            creationDate = Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("creation_time"));
-            priority = json.getString("priority");
-            status = json.getString("status");
-            reporter = new User(json.getString("creator"));
-            assignee = new User(json.getString("assigned_to"));
-            open = TextUtils.isEmpty(json.getString("resolution"));
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
     }
 }
