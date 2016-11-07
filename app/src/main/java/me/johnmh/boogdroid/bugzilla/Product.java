@@ -23,6 +23,8 @@ import android.text.TextUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +61,9 @@ public class Product extends me.johnmh.boogdroid.general.Product {
                         try {
                             bug.setId(Integer.parseInt(bugMap.get("id").toString()));
                             bug.setSummary(bugMap.get("summary").toString());
-                            bug.setCreationDate(Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", bugMap.get("creation_time").toString()));
+                            String creationTime;
+                            creationTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(bugMap.get("creation_time"));
+                            bug.setCreationDate(creationTime);
                             bug.setPriority(bugMap.get("priority").toString());
                             bug.setStatus(bugMap.get("status").toString());
                             bug.setReporter(new User(bugMap.get("creator").toString()));

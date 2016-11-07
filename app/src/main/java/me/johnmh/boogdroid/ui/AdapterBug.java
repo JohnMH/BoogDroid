@@ -18,21 +18,26 @@
 
 package me.johnmh.boogdroid.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.johnmh.boogdroid.R;
 import me.johnmh.boogdroid.general.Bug;
+import me.johnmh.boogdroid.general.Product;
 import me.johnmh.boogdroid.general.User;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.TextView;
 
-public class AdapterBug extends ArrayAdapter<Bug> {
+public class AdapterBug extends ArrayContainsAdapter<Bug> {
     private final LayoutInflater inflater;
+    private Filter filter;
 
     public AdapterBug(final Context context, final List<Bug> list) {
         super(context, R.layout.adapter_bug, list);

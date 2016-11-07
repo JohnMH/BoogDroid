@@ -22,10 +22,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,6 +90,25 @@ public class BugInfoFragment extends ListFragment {
         getListView().addHeaderView(mainView);
 
         final AdapterComment adapter = new AdapterComment(activity, bug.getComments());
+
+
+        EditText editCommentFilter = (EditText) mainView.findViewById(R.id.editCommentFilter);
+        editCommentFilter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         setListAdapter(adapter);
         bug.setAdapterComment(adapter, activity, this);
     }
@@ -107,18 +129,25 @@ public class BugInfoFragment extends ListFragment {
             }
         }
 
-        ((TextView) mainView.findViewById(R.id.creation_date)).setText(bug.getCreationDate());
+        TextView textCreationDate = (TextView) mainView.findViewById(R.id.creation_date);
+        textCreationDate.setText(bug.getCreationDate());
 
-        ((TextView) mainView.findViewById(R.id.summary)).setText(bug.getSummary());
+        TextView textSummary = (TextView) mainView.findViewById(R.id.summary);
+        textSummary.setText(bug.getSummary());
 
-        ((TextView) mainView.findViewById(R.id.reporter)).setText(bug.getReporter().name);
+        TextView textReporter = (TextView) mainView.findViewById(R.id.reporter);
+        textReporter.setText(bug.getReporter().name);
         if (assignee != null) {
-            ((TextView) mainView.findViewById(R.id.assignee)).setText(assignee.name);
+            TextView textAssignee = (TextView) mainView.findViewById(R.id.assignee);
+            textAssignee.setText(assignee.name);
         }
 
-        ((TextView) mainView.findViewById(R.id.priority)).setText(bug.getPriority());
-        ((TextView) mainView.findViewById(R.id.status)).setText(bug.getStatus());
+        TextView textPriority = (TextView) mainView.findViewById(R.id.priority);
+        textPriority.setText(bug.getPriority());
+        TextView textStatus = (TextView) mainView.findViewById(R.id.status);
+        textStatus.setText(bug.getStatus());
 
-        ((TextView) mainView.findViewById(R.id.description)).setText(bug.getDescription());
+        TextView textDescription = (TextView) mainView.findViewById(R.id.description);
+        textDescription.setText(bug.getDescription());
     }
 }

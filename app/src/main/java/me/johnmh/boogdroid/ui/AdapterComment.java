@@ -27,15 +27,18 @@ import me.johnmh.util.ImageLoader;
 import me.johnmh.util.Util;
 
 import android.content.Context;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AdapterComment extends ArrayAdapter<Comment> {
+public class AdapterComment extends ArrayContainsAdapter<Comment> {
     private LayoutInflater inflater;
 
     public AdapterComment(final Context context, final List<Comment> list) {
@@ -65,7 +68,7 @@ public class AdapterComment extends ArrayAdapter<Comment> {
         holder.creator.setText(item.getAuthor().name);
         holder.text.setText(item.getText());
         holder.date.setText(item.getDate());
-        holder.bugNumber.setText("#" + ( (item.getNumber() > 0) ? item.getNumber() : (position + 1) ));
+        holder.bugNumber.setText(new StringBuilder().append("#").append((item.getNumber() > 0) ? item.getNumber() : (position + 1)).toString());
 
         final User author = item.getAuthor();
         if (!TextUtils.isEmpty(author.avatarUrl)) {
