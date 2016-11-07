@@ -23,33 +23,6 @@ import org.json.JSONObject;
 import me.johnmh.util.Util;
 
 public class Comment extends me.johnmh.boogdroid.general.Comment {
-    public Comment(final Bug bug, final JSONObject json) {
-        super(bug);
-        createFromJSON(json);
-    }
 
-    private void createFromJSON(final JSONObject json) {
-        try {
-            id = json.getInt("id");
-            text = json.getString("text");
 
-            if (json.has("creator")) {
-                author = new User(json.getString("creator"));
-            } else {
-                author = new User(json.getString("author"));
-            }
-
-            if (json.has("creation_time")) {
-                date = Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("creation_time"));
-            } else {
-                date = Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("time"));
-            }
-
-            if (json.has("count")) {
-                number = json.getInt("count");
-            }
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

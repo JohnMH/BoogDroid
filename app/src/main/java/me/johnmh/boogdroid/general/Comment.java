@@ -25,9 +25,9 @@ public abstract class Comment {
     protected String date;
     protected int number = 0;
 
-    protected final Bug bug;
+    protected Bug bug;
 
-    public Comment(final Bug bug) {
+    public void setBug(Bug bug) {
         this.bug = bug;
     }
 
@@ -53,5 +53,25 @@ public abstract class Comment {
 
     public int getNumber() {
         return number;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

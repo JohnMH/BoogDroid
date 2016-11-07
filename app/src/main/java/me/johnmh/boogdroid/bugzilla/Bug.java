@@ -24,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import me.johnmh.boogdroid.general.*;
@@ -39,15 +40,89 @@ public class Bug extends me.johnmh.boogdroid.general.Bug {
         final BugzillaTask task = new BugzillaTask(product.getServer(), "Bug.comments", "'ids':[" + b.id + "]", new TaskListener() {
             @Override
             public void doInBackground(final Object response) {
+                if (product.getServer().isUseJson()) {
+                    doJsonParse(response);
+                } else {
+                    doXmlParse(response);
+                }
+            }
+
+            private void doJsonParse(Object response) {
                 try {
                     final JSONObject object = new JSONObject(response.toString());
                     final JSONArray comments = object.getJSONObject("result").getJSONObject("bugs").getJSONObject(Integer.toString(b.id)).getJSONArray("comments");
                     final int size = comments.length();
                     for (int i = 0; i < size; ++i) {
+                        JSONObject json = comments.getJSONObject(i);
                         if (i == 0) {
-                            description = comments.getJSONObject(i).getString("text");
+                            description = json.getString("text");
                         } else {
-                            newList.add(new Comment(b, comments.getJSONObject(i)));
+                            Comment comment = new Comment();
+                            try {
+                                comment.setId(json.getInt("id"));
+                                comment.setText(json.getString("text"));
+
+                                if (json.has("creator")) {
+                                    comment.setAuthor(new User(json.getString("creator")));
+                                } else {
+                                    comment.setAuthor(new User(json.getString("author")));
+                                }
+
+                                if (json.has("creation_time")) {
+                                    comment.setDate(Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("creation_time")));
+                                } else {
+                                    comment.setDate(Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("time")));
+                                }
+
+                                if (json.has("count")) {
+                                    comment.setNumber(json.getInt("count"));
+                                }
+                            } catch (final Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                } catch (final Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            private void doXmlParse(Object response) {
+                try {
+                    Object bugs = ((HashMap<String, Object>) response).get("bugs");
+                    Object objects = ((HashMap<String, Object>) bugs).get(Integer.toString(b.id));
+                    Object[] comments = ((HashMap<String, Object[]>) objects).get("comments");
+                    final int size = comments.length;
+                    for (int i = 0; i < size; ++i) {
+                        HashMap<String, String> commentMap = (HashMap<String, String>) comments[i];
+                        if (i == 0) {
+                            description = commentMap.get("text");
+                        } else {
+                            Comment comment = new Comment();
+                            comment.setBug(b);
+                            try {
+                                comment.setId(Integer.parseInt(commentMap.get("id")));
+                                comment.setText(commentMap.get("text"));
+
+                                if (commentMap.get("creator") != null) {
+                                    comment.setAuthor(new User(commentMap.get("creator")));
+                                } else {
+                                    comment.setAuthor(new User(commentMap.get("author")));
+                                }
+
+                                if (commentMap.get("creation_time") != null) {
+                                    comment.setDate(Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", commentMap.get("creation_time")));
+                                } else {
+                                    comment.setDate(Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", commentMap.get("time")));
+                                }
+
+                                if (commentMap.get("count") != null) {
+                                    comment.setNumber(Integer.parseInt(commentMap.get("count")));
+                                }
+                            } catch (final Exception e) {
+                                e.printStackTrace();
+                            }
+                            newList.add(comment);
                         }
                     }
                 } catch (final Exception e) {
