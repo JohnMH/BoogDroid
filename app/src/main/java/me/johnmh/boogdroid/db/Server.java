@@ -34,4 +34,6 @@ public class Server extends Model {
     public String user;
     @Column(name = "password")
     public String password;
+    @Column(name = "json")
+    public Boolean json;
 }

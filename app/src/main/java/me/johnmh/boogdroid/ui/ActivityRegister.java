@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
@@ -36,6 +37,7 @@ public class ActivityRegister extends ActionBarActivity {
     private EditText urlView;
     private EditText userView;
     private EditText passwordView;
+    private CheckBox useJsonView;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class ActivityRegister extends ActionBarActivity {
         urlView = ((EditText) findViewById(R.id.url));
         userView = ((EditText) findViewById(R.id.user));
         passwordView = ((EditText) findViewById(R.id.password));
+        useJsonView = ((CheckBox) findViewById(R.id.checkbox));
 
         final int serverPos = getIntent().getIntExtra("server_position", -1);
         if (serverPos == -1) {
@@ -66,6 +69,7 @@ public class ActivityRegister extends ActionBarActivity {
             urlView.setText(server.getUrl());
             userView.setText(server.getUser());
             passwordView.setText(server.getPassword());
+            useJsonView.setText(server.getPassword());
         }
     }
 
@@ -83,6 +87,7 @@ public class ActivityRegister extends ActionBarActivity {
         final String url = urlView.getText().toString();
         final String user = userView.getText().toString();
         final String password = passwordView.getText().toString();
+        final Boolean useJsonImplementation = useJsonView.isActivated();
 
         boolean error = false;
 
@@ -105,23 +110,24 @@ public class ActivityRegister extends ActionBarActivity {
 
         if (!error) {
             if (server == null) {
-                registerServer(name, url, user, password);
+                registerServer(name, url, user, password, useJsonImplementation);
             } else {
-                editServer(name, url, user, password);
+                editServer(name, url, user, password, useJsonImplementation);
             }
         }
     }
 
-    private void editServer(final String name, final String url, final String user, final String password) {
+    private void editServer(final String name, final String url, final String user, final String password, final Boolean useJsonImplementation) {
         server.setName(name);
         server.setUrl(url);
         server.setUser(user, password);
+        server.setUseJson(useJsonImplementation);
         server.save();
         finish();
     }
 
-    private void registerServer(final String name, final String url, final String user, final String password) {
-        final Server newServer = new me.johnmh.boogdroid.bugzilla.Server(name, url);
+    private void registerServer(final String name, final String url, final String user, final String password, boolean jsonImplementation) {
+        final Server newServer = new me.johnmh.boogdroid.bugzilla.Server(name, url, jsonImplementation);
         newServer.setUser(user, password);
         newServer.save();
         Server.servers.add(newServer);

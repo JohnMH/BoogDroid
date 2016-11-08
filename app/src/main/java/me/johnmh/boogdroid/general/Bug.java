@@ -41,15 +41,11 @@ public abstract class Bug {
 
     protected final List<Comment> comments = new ArrayList<Comment>();
 
-    protected final Product product;
+    protected Product product;
 
     private BaseAdapter adapter;
     private ActionBarActivity activity;
     private BugInfoFragment fragment;
-
-    public Bug(final Product product) {
-        this.product = product;
-    }
 
     protected abstract void loadComments();
 
@@ -106,5 +102,41 @@ public abstract class Bug {
 
     public List<Comment> getComments() {
         return comments;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setReporter(me.johnmh.boogdroid.bugzilla.User reporter) {
+        this.reporter = reporter;
+    }
+
+    public void setAssignee(me.johnmh.boogdroid.bugzilla.User assignee) {
+        this.assignee = assignee;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+
+    public void setProduct(me.johnmh.boogdroid.bugzilla.Product product) {
+        this.product = product;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

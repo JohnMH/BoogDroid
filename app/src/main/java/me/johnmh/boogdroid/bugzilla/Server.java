@@ -22,13 +22,19 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import me.johnmh.util.Util.TaskListener;
 
 public class Server extends me.johnmh.boogdroid.general.Server {
-    public Server(final String name, final String url) {
-        super(name, url, BUGZILLA);
+
+    public Server(final String name, final String url, boolean jsonImplementation) {
+        super(name, url, BUGZILLA, jsonImplementation);
     }
 
     public Server(final me.johnmh.boogdroid.db.Server server) {
@@ -40,35 +46,102 @@ public class Server extends me.johnmh.boogdroid.general.Server {
         // Get all the products' ids and pass it to loadProductsFromIds()
         final BugzillaTask task = new BugzillaTask(this, "Product.get_accessible_products", new TaskListener() {
             @Override
-            public void doInBackground(final String s) {
+            public void doInBackground(final Object response) {
             }
 
             @Override
-            public void onPostExecute(final String s) {
-                try {
-                    final JSONObject object = new JSONObject(s);
-                    loadProductsFromIds(object.getJSONObject("result").getString("ids"));
-                } catch (final Exception e) {
-                    e.printStackTrace();
+            public void onPostExecute(final Object response) {
+                if (isUseJson()) {
+                    doReadJson(response);
+                } else {
+                    doReadXml(response);
                 }
             }
+
         });
         task.execute();
     }
 
+    private void doReadXml(Object response) {
+        try {
+            List listaIds = Arrays.asList(((HashMap<String, Object[]>) response).get("ids"));
+            Iterator iterator = listaIds.iterator();
+            String listaIdsStr = "";
+            while (iterator.hasNext()) {
+                Object next =  iterator.next();
+                listaIdsStr += next;
+                if (iterator.hasNext()) {
+                    listaIdsStr += ",";
+                }
+            }
+            loadProductsFromIds("["+listaIdsStr+"]");
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void doReadJson(Object response) {
+        try {
+            final JSONObject object = new JSONObject(response.toString());
+            String listaIds = object.getJSONObject("result").getString("ids");
+            loadProductsFromIds(listaIds);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void loadProductsFromIds(final String productIds) {
-        final Server server = this;
-        final List<me.johnmh.boogdroid.general.Product> newList = new ArrayList<me.johnmh.boogdroid.general.Product>();
         final BugzillaTask task = new BugzillaTask(this, "Product.get", "'ids':" + productIds + ",'include_fields':['id', 'name', 'description']", new TaskListener() {
+            List<me.johnmh.boogdroid.general.Product> newList = new ArrayList<>();
+
             @Override
-            public void doInBackground(final String s) {
+            public void doInBackground(final Object response) {
+                if (isUseJson()) {
+                    doJsonParse(response);
+                } else {
+                    doXmlParse(response);
+                }
+            }
+
+            private void doXmlParse(Object response) {
                 try {
-                    final JSONObject object = new JSONObject(s);
+                    List<Object> productsList = Arrays.asList(((HashMap<String, Object[]>) response).get("products"));
+                    final int size = productsList.size();
+                    for (int i = 0; i < size; ++i) {
+                        Product product = new Product();
+                        product.setServer(Server.this);
+                        try {
+                            HashMap<String, Object> productMap = (HashMap<String, Object>) productsList.get(i);
+                            product.setId(Integer.parseInt(productMap.get("id").toString()));
+                            product.setName(productMap.get("name").toString());
+                            product.setDescription(productMap.get("description").toString());
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        newList.add(product);
+                    }
+                } catch (final Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            private void doJsonParse(Object response) {
+                try {
+                    final JSONObject object = new JSONObject(response.toString());
                     final JSONArray productsJson = object.getJSONObject("result").getJSONArray("products");
                     final int size = productsJson.length();
                     for (int i = 0; i < size; ++i) {
-                        final JSONObject p = productsJson.getJSONObject(i);
-                        newList.add(new Product(server, p));
+                        Product product = new Product();
+                        product.setServer(Server.this);
+                        final JSONObject json = productsJson.getJSONObject(i);
+                        try {
+                            product.setId(json.getInt("id"));
+                            product.setName(json.getString("name"));
+                            product.setDescription(json.getString("description"));
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 } catch (final Exception e) {
                     e.printStackTrace();
@@ -76,7 +149,7 @@ public class Server extends me.johnmh.boogdroid.general.Server {
             }
 
             @Override
-            public void onPostExecute(final String s) {
+            public void onPostExecute(final Object response) {
                 products.clear();
                 products.addAll(newList);
                 productsListUpdated();
@@ -84,4 +157,5 @@ public class Server extends me.johnmh.boogdroid.general.Server {
         });
         task.execute();
     }
+
 }

@@ -18,34 +18,88 @@
 
 package me.johnmh.boogdroid.bugzilla;
 
+import android.text.TextUtils;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
+import me.johnmh.util.Util;
 import me.johnmh.util.Util.TaskListener;
 
 public class Product extends me.johnmh.boogdroid.general.Product {
-    public Product(final me.johnmh.boogdroid.general.Server server, final JSONObject json) {
-        super(server);
-        createFromJSON(json);
-    }
 
     @Override
     protected void loadBugs() {
-        final Product p = this;
-        final List<me.johnmh.boogdroid.general.Bug> newList = new ArrayList<me.johnmh.boogdroid.general.Bug>();
-        final BugzillaTask task = new BugzillaTask(server, "Bug.search", "'product':'" + p.getName() + "', 'resolution':'', 'limit':0, 'include_fields':['id', 'summary', 'priority', 'status', 'creator', 'assigned_to', 'resolution', 'creation_time']", new TaskListener() {
+        final BugzillaTask task = new BugzillaTask(server, "Bug.search", "'product':'" + getName() + "', 'resolution':'', 'limit':0, 'include_fields':['id', 'summary', 'priority', 'status', 'creator', 'assigned_to', 'resolution', 'creation_time']", new TaskListener() {
+            List<me.johnmh.boogdroid.general.Bug> newList = new ArrayList<me.johnmh.boogdroid.general.Bug>();
+
             @Override
-            public void doInBackground(final String s) {
+            public void doInBackground(final Object response) {
+                if(server.isUseJson()) {
+                    doJsonParse(response);
+                } else {
+                    doXmlParse(response);
+                }
+            }
+
+            private void doXmlParse(Object response) {
                 try {
-                    final JSONObject object = new JSONObject(s);
+                    List bugs = Arrays.asList(((HashMap<String, Object[]>) response).get("bugs"));
+                    final int size = bugs.size();
+                    for (int i = 0; i < size; ++i) {
+                        Bug bug = new Bug();
+                        bug.setProduct(Product.this);
+                        HashMap<String, Object> bugMap = (HashMap<String, Object>) bugs.get(i);
+                        try {
+                            bug.setId(Integer.parseInt(bugMap.get("id").toString()));
+                            bug.setSummary(bugMap.get("summary").toString());
+                            bug.setCreationDate(Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", bugMap.get("creation_time").toString()));
+                            bug.setPriority(bugMap.get("priority").toString());
+                            bug.setStatus(bugMap.get("status").toString());
+                            bug.setReporter(new User(bugMap.get("creator").toString()));
+                            bug.setAssignee(new User(bugMap.get("assigned_to").toString()));
+                            bug.setOpen(TextUtils.isEmpty(bugMap.get("resolution").toString()));
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        newList.add(bug);
+                    }
+                    Collections.reverse(newList);
+                } catch (final Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            private void doJsonParse(Object response) {
+                try {
+                    final JSONObject object = new JSONObject(response.toString());
                     final JSONArray bugs = object.getJSONObject("result").getJSONArray("bugs");
                     final int size = bugs.length();
                     for (int i = 0; i < size; ++i) {
-                        newList.add(new Bug(p, bugs.getJSONObject(i)));
+                        Bug bug = new Bug();
+                        JSONObject json = bugs.getJSONObject(i);
+                        bug.setProduct(Product.this);
+                        try {
+                            bug.setId(json.getInt("id"));
+                            bug.setSummary(json.getString("summary"));
+                            bug.setCreationDate(Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("creation_time")));
+                            bug.setPriority(json.getString("priority"));
+                            bug.setStatus(json.getString("status"));
+                            bug.setReporter(new User(json.getString("creator")));
+                            bug.setAssignee(new User(json.getString("assigned_to")));
+                            bug.setOpen(TextUtils.isEmpty(json.getString("resolution")));
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        newList.add(bug);
                     }
                     Collections.reverse(newList);
                 } catch (final Exception e) {
@@ -54,22 +108,24 @@ public class Product extends me.johnmh.boogdroid.general.Product {
             }
 
             @Override
-            public void onPostExecute(final String s) {
-                p.clearBugs();
-                p.addBugs(newList);
+            public void onPostExecute(final Object response) {
+                clearBugs();
+                addBugs(newList);
                 bugsListUpdated();
             }
         });
         task.execute();
     }
 
-    private void createFromJSON(final JSONObject json) {
-        try {
-            id = json.getInt("id");
-            name = json.getString("name");
-            description = json.getString("description");
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
