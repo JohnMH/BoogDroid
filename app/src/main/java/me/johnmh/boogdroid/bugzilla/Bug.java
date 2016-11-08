@@ -23,9 +23,11 @@ import android.text.TextUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import me.johnmh.boogdroid.general.*;
 import me.johnmh.util.Util;
@@ -94,30 +96,30 @@ public class Bug extends me.johnmh.boogdroid.general.Bug {
                     Object[] comments = ((HashMap<String, Object[]>) objects).get("comments");
                     final int size = comments.length;
                     for (int i = 0; i < size; ++i) {
-                        HashMap<String, String> commentMap = (HashMap<String, String>) comments[i];
+                        HashMap<String, Object> commentMap = (HashMap<String, Object>) comments[i];
                         if (i == 0) {
-                            description = commentMap.get("text");
+                            description = (String) commentMap.get("text");
                         } else {
                             Comment comment = new Comment();
                             comment.setBug(b);
                             try {
-                                comment.setId(Integer.parseInt(commentMap.get("id")));
-                                comment.setText(commentMap.get("text"));
+                                comment.setId((Integer)commentMap.get("id"));
+                                comment.setText((String) commentMap.get("text"));
 
                                 if (commentMap.get("creator") != null) {
-                                    comment.setAuthor(new User(commentMap.get("creator")));
+                                    comment.setAuthor(new User((String) commentMap.get("creator")));
                                 } else {
-                                    comment.setAuthor(new User(commentMap.get("author")));
+                                    comment.setAuthor(new User((String) commentMap.get("author")));
                                 }
 
                                 if (commentMap.get("creation_time") != null) {
-                                    comment.setDate(Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", commentMap.get("creation_time")));
+                                    comment.setDate(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(commentMap.get("creation_time")));
                                 } else {
-                                    comment.setDate(Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", commentMap.get("time")));
+                                    comment.setDate(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(commentMap.get("time")));
                                 }
 
                                 if (commentMap.get("count") != null) {
-                                    comment.setNumber(Integer.parseInt(commentMap.get("count")));
+                                    comment.setNumber((Integer) commentMap.get("count"));
                                 }
                             } catch (final Exception e) {
                                 e.printStackTrace();

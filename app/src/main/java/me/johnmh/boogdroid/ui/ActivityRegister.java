@@ -57,7 +57,7 @@ public class ActivityRegister extends ActionBarActivity {
         urlView = ((EditText) findViewById(R.id.url));
         userView = ((EditText) findViewById(R.id.user));
         passwordView = ((EditText) findViewById(R.id.password));
-        useJsonView = ((CheckBox) findViewById(R.id.checkbox));
+        useJsonView = ((CheckBox) findViewById(R.id.useJson));
 
         final int serverPos = getIntent().getIntExtra("server_position", -1);
         if (serverPos == -1) {
@@ -69,7 +69,7 @@ public class ActivityRegister extends ActionBarActivity {
             urlView.setText(server.getUrl());
             userView.setText(server.getUser());
             passwordView.setText(server.getPassword());
-            useJsonView.setText(server.getPassword());
+            useJsonView.setActivated(server.isUseJson());
         }
     }
 

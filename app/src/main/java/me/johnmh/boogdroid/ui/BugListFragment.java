@@ -22,9 +22,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -72,7 +75,20 @@ public class BugListFragment extends ListFragment {
         }
 
         final Product product = Server.servers.get(serverPos).getProductFromId(productId);
-        //activity.setTitle(product.getName());
+        EditText filterProduct = ((EditText) view.findViewById(R.id.editFilterProduct));
+        filterProduct.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                adapter.getFilter().filter(cs);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {}
+        });
 
         adapter = new AdapterBug(activity, product.getBugs());
         setListAdapter(adapter);

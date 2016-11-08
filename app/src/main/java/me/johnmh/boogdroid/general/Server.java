@@ -142,6 +142,11 @@ public abstract class Server {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
     public String getUrl() {
         return url;
     }
@@ -172,4 +177,6 @@ public abstract class Server {
     public void setUseJson(Boolean useJson) {
         this.jsonImplementation = useJson;
     }
+
+
 }

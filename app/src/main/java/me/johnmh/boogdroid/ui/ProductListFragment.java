@@ -24,9 +24,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import me.johnmh.boogdroid.R;
 import me.johnmh.boogdroid.general.Server;
@@ -47,9 +50,9 @@ public class ProductListFragment extends Fragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        final RecyclerView view = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
+        final View rootView = inflater.inflate(R.layout.recycler_view, container, false);
         final ActionBarActivity activity = (ActionBarActivity) getActivity();
-
+        RecyclerView view = (RecyclerView) rootView.findViewById(R.id.recycler);
         view.setHasFixedSize(true);
 
         view.setLayoutManager(new LinearLayoutManager(activity));
@@ -66,11 +69,25 @@ public class ProductListFragment extends Fragment {
 
         final Server server = Server.servers.get(serverPos);
 
+        EditText filterProduct = (EditText) rootView.findViewById(R.id.editFilter);
+        filterProduct.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                adapter.getFilter().filter(cs);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {}
+        });
         adapter = new AdapterProduct(server.getProducts(), this);
         view.setAdapter(adapter);
         server.setAdapterProduct(adapter, activity);
 
-        return view;
+        return rootView;
     }
 
     public void onListItemClick(final int position) {
