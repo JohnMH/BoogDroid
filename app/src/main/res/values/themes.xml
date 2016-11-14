@@ -13,6 +13,8 @@
         <item name="android:textColorSecondary">#B2FFFFFF</item>
         <item name="android:textColorTertiary">#4CFFFFFF</item>
         <item name="android:windowBackground">@color/darkBG</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.BoogDroid.NoActionBar" parent="Theme.BoogDroid">

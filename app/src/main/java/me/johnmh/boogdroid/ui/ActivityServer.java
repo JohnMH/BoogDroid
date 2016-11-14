@@ -21,10 +21,10 @@ package me.johnmh.boogdroid.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -58,7 +58,7 @@ public class ActivityServer extends ActionBarActivity implements ProductListFrag
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                drawerLayout.openDrawer(Gravity.START);
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
 
@@ -94,8 +94,8 @@ public class ActivityServer extends ActionBarActivity implements ProductListFrag
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerVisible(Gravity.START)) {
-            drawerLayout.closeDrawer(Gravity.START);
+        if (drawerLayout.isDrawerVisible(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -103,7 +103,7 @@ public class ActivityServer extends ActionBarActivity implements ProductListFrag
 
     @Override
     public void onServerSelected(final int position) {
-        drawerLayout.closeDrawer(Gravity.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
         if (position == Server.servers.size()) {
             openServerManager();
         } else {
@@ -116,23 +116,24 @@ public class ActivityServer extends ActionBarActivity implements ProductListFrag
     @Override
     public void onProductSelected(final int productId) {
         this.productId = productId;
-        Fragment fragment = new BugListFragment();
+        Fragment bugsFragment = new BugListFragment();
         final Bundle arguments = new Bundle();
         arguments.putInt("server_position", serverPos);
         arguments.putInt("product_id", productId);
-        fragment.setArguments(arguments);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+        bugsFragment.setArguments(arguments);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, bugsFragment).addToBackStack(null).commit();
     }
 
     @Override
     public void onBugSelected(final int bugId) {
-        Fragment fragment = new BugInfoFragment();
+//        Fragment bugInfoFragment = new BugInfoFragment();
+        Fragment bugTabFragment = new TabFragment();
         final Bundle arguments = new Bundle();
         arguments.putInt("server_position", serverPos);
         arguments.putInt("product_id", productId);
         arguments.putInt("bug_id", bugId);
-        fragment.setArguments(arguments);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+        bugTabFragment.setArguments(arguments);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, bugTabFragment).addToBackStack(null).commit();
     }
 
     private void setServer(final int pos) {
@@ -147,11 +148,11 @@ public class ActivityServer extends ActionBarActivity implements ProductListFrag
             }
         }
 
-        Fragment fragment = new ProductListFragment();
+        Fragment productsFragment = new ProductListFragment();
         final Bundle arguments = new Bundle();
         arguments.putInt("server_position", serverPos);
-        fragment.setArguments(arguments);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        productsFragment.setArguments(arguments);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, productsFragment).commit();
     }
 
     private void openServerManager() {

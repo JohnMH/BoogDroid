@@ -23,20 +23,6 @@
             android:name=".ui.ActivityServerManager"
             android:label="@string/manage_servers" />
         <activity android:name=".ui.ActivityRegister" />
-        <activity
-            android:name=".github.GithubLogin"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="register"
-                    android:scheme="boogdroid" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

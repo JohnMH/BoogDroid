@@ -18,7 +18,7 @@
 
 package me.johnmh.boogdroid.general;
 
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
@@ -44,12 +44,12 @@ public abstract class Bug {
     protected Product product;
 
     private BaseAdapter adapter;
-    private ActionBarActivity activity;
+    private AppCompatActivity activity;
     private BugInfoFragment fragment;
 
     protected abstract void loadComments();
 
-    public void setAdapterComment(final BaseAdapter adapter, final ActionBarActivity activity, final BugInfoFragment fragment) {
+    public void setAdapterComment(final BaseAdapter adapter, final AppCompatActivity activity, final BugInfoFragment fragment) {
         this.adapter = adapter;
         this.activity = activity;
         this.fragment = fragment;
