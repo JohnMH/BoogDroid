@@ -77,19 +77,27 @@ public class TabFragment extends Fragment {
         @Override
         public Fragment getItem(int position)
         {
+            final Bundle arguments = new Bundle();
+            arguments.putInt("server_position", serverPos);
+            arguments.putInt("product_id", productId);
+            arguments.putInt("bug_id", bugId);
             switch (position){
                 case 0 : //Comments
-                case 1 : //Status
-                case 2 : //Attributes
-                case 3 : //Attachments
                     BugInfoFragment bugInfoFragment = new BugInfoFragment();
-                    final Bundle arguments = new Bundle();
-                    arguments.putInt("server_position", serverPos);
-                    arguments.putInt("product_id", productId);
-                    arguments.putInt("bug_id", bugId);
                     bugInfoFragment.setArguments(arguments);
-
                     return bugInfoFragment;
+                case 1 : //Status
+                    BugStatusFragment bugStatusFragment = new BugStatusFragment();
+                    bugStatusFragment.setArguments(arguments);
+                    return bugStatusFragment;
+                case 2 : //Attributes
+                    BugAttributesFragment bugAttributesFragment = new BugAttributesFragment();
+                    bugAttributesFragment.setArguments(arguments);
+                    return bugAttributesFragment;
+                case 3 : //Attachments
+                    BugAttachmentsFragment bugAttachmentsFragment = new BugAttachmentsFragment();
+                    bugAttachmentsFragment.setArguments(arguments);
+                    return bugAttachmentsFragment;
             }
             return null;
         }

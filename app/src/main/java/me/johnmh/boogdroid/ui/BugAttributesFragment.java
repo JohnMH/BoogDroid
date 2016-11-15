@@ -18,20 +18,14 @@
 
 package me.johnmh.boogdroid.ui;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,19 +33,17 @@ import me.johnmh.boogdroid.R;
 import me.johnmh.boogdroid.general.Bug;
 import me.johnmh.boogdroid.general.Server;
 import me.johnmh.boogdroid.general.User;
-
 import me.johnmh.util.ImageLoader;
 import me.johnmh.util.Util;
 
 
-public class BugInfoFragment extends ListFragment {
+public class BugAttributesFragment extends Fragment {
     private Bug bug;
-
-    private View mainView;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.activity_bug, container, false);
+        View view = inflater.inflate(R.layout.bug_status, null, false);
+
         final ActionBarActivity activity = (ActionBarActivity) getActivity();
 
         activity.setSupportProgressBarIndeterminateVisibility(true);
@@ -78,84 +70,46 @@ public class BugInfoFragment extends ListFragment {
 
         bug = Server.servers.get(serverPos).getBugFromId(bugId);
 
-        mainView = inflater.inflate(R.layout.bug_info, null, false);
-        updateView();
+        //updateView(view);
 
         return view;
     }
 
-    @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        final AppCompatActivity activity = (AppCompatActivity) getActivity();
-
-        ListView listView = getListView();
-        listView.addHeaderView(mainView);
-
-        final AdapterComment adapter = new AdapterComment(activity, bug.getComments());
-
-
-        EditText editCommentFilter = (EditText) mainView.findViewById(R.id.editCommentFilter);
-        editCommentFilter.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter.getFilter().filter(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        View footer = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_comment, null, false);
-
-        listView.addFooterView(footer);
-
-        setListAdapter(adapter);
-        bug.setAdapterComment(adapter, activity, this);
-    }
-
-    public void updateView() {
+    public void updateView(View view) {
         final User reporter = bug.getReporter();
         if (!TextUtils.isEmpty(reporter.avatarUrl)) {
-            ImageLoader.loadImage(reporter.avatarUrl, (ImageView) mainView.findViewById(R.id.reporter_img));
+            ImageLoader.loadImage(reporter.avatarUrl, (ImageView) view.findViewById(R.id.reporter_img));
         } else {
-            ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(reporter.email), (ImageView) mainView.findViewById(R.id.reporter_img));
+            ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(reporter.email), (ImageView) view.findViewById(R.id.reporter_img));
         }
         final User assignee = bug.getAssignee();
         if (assignee != null) {
             if (!TextUtils.isEmpty(assignee.avatarUrl)) {
-                ImageLoader.loadImage(assignee.avatarUrl, (ImageView) mainView.findViewById(R.id.assignee_img));
+                ImageLoader.loadImage(assignee.avatarUrl, (ImageView) view.findViewById(R.id.assignee_img));
             } else {
-                ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(assignee.email), (ImageView) mainView.findViewById(R.id.assignee_img));
+                ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(assignee.email), (ImageView) view.findViewById(R.id.assignee_img));
             }
         }
 
-        TextView textCreationDate = (TextView) mainView.findViewById(R.id.creation_date);
+        TextView textCreationDate = (TextView) view.findViewById(R.id.creation_date);
         textCreationDate.setText(bug.getCreationDate());
 
-        TextView textSummary = (TextView) mainView.findViewById(R.id.summary);
+        TextView textSummary = (TextView) view.findViewById(R.id.summary);
         textSummary.setText(bug.getSummary());
 
-        TextView textReporter = (TextView) mainView.findViewById(R.id.reporter);
+        TextView textReporter = (TextView) view.findViewById(R.id.reporter);
         textReporter.setText(bug.getReporter().name);
         if (assignee != null) {
-            TextView textAssignee = (TextView) mainView.findViewById(R.id.assignee);
+            TextView textAssignee = (TextView) view.findViewById(R.id.assignee);
             textAssignee.setText(assignee.name);
         }
 
-        TextView textPriority = (TextView) mainView.findViewById(R.id.priority);
+        TextView textPriority = (TextView) view.findViewById(R.id.priority);
         textPriority.setText(bug.getPriority());
-        TextView textStatus = (TextView) mainView.findViewById(R.id.status);
+        TextView textStatus = (TextView) view.findViewById(R.id.status);
         textStatus.setText(bug.getStatus());
 
-        TextView textDescription = (TextView) mainView.findViewById(R.id.description);
+        TextView textDescription = (TextView) view.findViewById(R.id.description);
         textDescription.setText(bug.getDescription());
     }
 }
