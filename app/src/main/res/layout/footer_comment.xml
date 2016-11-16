@@ -11,11 +11,11 @@
         android:minLines="3"
         android:maxLines="3"
         android:ems="10"
-        android:id="@+id/editText" />
+        android:id="@+id/editComment" />
 
     <Button
-        android:text="Add comment"
+        android:text="@string/add_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button" />
+        android:id="@+id/addComment" />
 </LinearLayout>

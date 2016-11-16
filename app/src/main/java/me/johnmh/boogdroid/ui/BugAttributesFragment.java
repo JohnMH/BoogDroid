@@ -42,7 +42,7 @@ public class BugAttributesFragment extends Fragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.bug_status, null, false);
+        View view = inflater.inflate(R.layout.bug_attributes, null, false);
 
         final ActionBarActivity activity = (ActionBarActivity) getActivity();
 

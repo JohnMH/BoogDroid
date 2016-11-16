@@ -88,8 +88,6 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
 
         Map<String, Object> args = null;
         try {
-//            Type type = new TypeToken<HashMap<String, Object>>() {}.getType();
-//            args = new Gson().fromJson(params, type);
             if (params == null || params.equals("")){
                 args = new HashMap<>();
             } else {
@@ -107,33 +105,6 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
         }
 
-        //Implementation on apache (not usable because package names (core library)
-//        XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
-//        URL url = null;
-//        try {
-//            url = new URL(server.getUrl() + "/xmlrpc.cgi");
-//            if(url.getHost() == null)
-//                throw new MalformedURLException();
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        }
-//        config.setServerURL(url);
-//        XmlRpcClient client = new XmlRpcClient();
-//        XmlRpcCommonsTransportFactory transportFactory = new XmlRpcCommonsTransportFactory(client);
-//        // set the HttpClient so that we retain cookies
-//      //  transportFactory.setHttpClient(HttpClient.get );
-//        client.setTransportFactory(transportFactory);
-//        client.setConfig(config);
-//
-//        HashMap<String, Object> args = new HashMap<>();
-//        args.put("login", server.getName());
-//        args.put("password", server.getPassword());
-//        HashMap<String, Object> result = null;
-//        try {
-//            result = (HashMap<String, Object>) client.execute(method, new Object[]{args});
-//        } catch (XmlRpcException e) {
-//            e.printStackTrace();
-//        }
         listener.doInBackground(response);
         return null;
     }
@@ -209,7 +180,6 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
             request.put("params", array);
 
             // Send the request
-            //final HttpClient httpClient = new DefaultHttpClient();
             final HttpClient httpClient = MySSLSocketFactory.getNewHttpClient();
             final HttpPost httpPost = new HttpPost(server.getUrl() + "/jsonrpc.cgi");
             httpPost.addHeader("Content-Type", "application/json");

@@ -29,13 +29,20 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 import me.johnmh.boogdroid.R;
+import me.johnmh.boogdroid.bugzilla.BugzillaTask;
 import me.johnmh.boogdroid.general.Bug;
 import me.johnmh.boogdroid.general.Server;
 import me.johnmh.boogdroid.general.User;
@@ -115,6 +122,52 @@ public class BugInfoFragment extends ListFragment {
 
         View footer = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_comment, null, false);
 
+        final EditText editComment = (EditText)footer.findViewById(R.id.editComment);
+        editComment.setText("");
+        Button addComment = (Button)footer.findViewById(R.id.addComment);
+        addComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String comment = JSONObject.quote(editComment.getText().toString());
+                final Server server = bug.getProduct().getServer();
+                final BugzillaTask task = new BugzillaTask(server, "Bug.add_comment", "'id':" + bug.getId() +", 'comment': "+comment, new Util.TaskListener() {
+
+                    @Override
+                    public void doInBackground(final Object response) {
+                        if (server.isUseJson()) {
+                            doJsonParse(response);
+                        } else {
+                            doXmlParse(response);
+                        }
+                    }
+
+                    private void doJsonParse(Object response) {
+                        //TODO: It returns the new comment id. So you could only reload that one
+                        try {
+                            System.out.println(response);
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    private void doXmlParse(Object response) {
+                        //TODO: It returns the new comment id. So you could only reload that one
+                        try {
+                            System.out.println(response);
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onPostExecute(final Object response) {
+                        updateView();
+                        bug.loadComments();
+                    }
+                });
+                task.execute();
+            }
+        });
         listView.addFooterView(footer);
 
         setListAdapter(adapter);

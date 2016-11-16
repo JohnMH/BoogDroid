@@ -47,7 +47,7 @@ public abstract class Bug {
     private AppCompatActivity activity;
     private BugInfoFragment fragment;
 
-    protected abstract void loadComments();
+    public abstract void loadComments();
 
     public void setAdapterComment(final BaseAdapter adapter, final AppCompatActivity activity, final BugInfoFragment fragment) {
         this.adapter = adapter;
@@ -134,6 +134,10 @@ public abstract class Bug {
 
     public void setProduct(me.johnmh.boogdroid.bugzilla.Product product) {
         this.product = product;
+    }
+
+    public Product getProduct() {
+        return product;
     }
 
     public void setId(int id) {

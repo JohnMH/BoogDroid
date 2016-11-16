@@ -18,8 +18,6 @@
 
 package me.johnmh.boogdroid.bugzilla;
 
-import android.text.TextUtils;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -29,17 +27,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import me.johnmh.boogdroid.general.*;
 import me.johnmh.util.Util;
 import me.johnmh.util.Util.TaskListener;
 
 public class Bug extends me.johnmh.boogdroid.general.Bug {
 
     @Override
-    protected void loadComments() {
-        final Bug b = this;
-        final List<me.johnmh.boogdroid.general.Comment> newList = new ArrayList<me.johnmh.boogdroid.general.Comment>();
-        final BugzillaTask task = new BugzillaTask(product.getServer(), "Bug.comments", "'ids':[" + b.id + "]", new TaskListener() {
+    public void loadComments() {
+        final BugzillaTask task = new BugzillaTask(product.getServer(), "Bug.comments", "'ids':[" + id + "]", new TaskListener() {
+            List<me.johnmh.boogdroid.general.Comment> newList = new ArrayList<>();
+
             @Override
             public void doInBackground(final Object response) {
                 if (product.getServer().isUseJson()) {
@@ -52,7 +49,7 @@ public class Bug extends me.johnmh.boogdroid.general.Bug {
             private void doJsonParse(Object response) {
                 try {
                     final JSONObject object = new JSONObject(response.toString());
-                    final JSONArray comments = object.getJSONObject("result").getJSONObject("bugs").getJSONObject(Integer.toString(b.id)).getJSONArray("comments");
+                    final JSONArray comments = object.getJSONObject("result").getJSONObject("bugs").getJSONObject(Integer.toString(id)).getJSONArray("comments");
                     final int size = comments.length();
                     for (int i = 0; i < size; ++i) {
                         JSONObject json = comments.getJSONObject(i);
@@ -92,7 +89,7 @@ public class Bug extends me.johnmh.boogdroid.general.Bug {
             private void doXmlParse(Object response) {
                 try {
                     Object bugs = ((HashMap<String, Object>) response).get("bugs");
-                    Object objects = ((HashMap<String, Object>) bugs).get(Integer.toString(b.id));
+                    Object objects = ((HashMap<String, Object>) bugs).get(Integer.toString(id));
                     Object[] comments = ((HashMap<String, Object[]>) objects).get("comments");
                     final int size = comments.length;
                     for (int i = 0; i < size; ++i) {
@@ -101,7 +98,7 @@ public class Bug extends me.johnmh.boogdroid.general.Bug {
                             description = (String) commentMap.get("text");
                         } else {
                             Comment comment = new Comment();
-                            comment.setBug(b);
+                            comment.setBug(Bug.this);
                             try {
                                 comment.setId((Integer)commentMap.get("id"));
                                 comment.setText((String) commentMap.get("text"));

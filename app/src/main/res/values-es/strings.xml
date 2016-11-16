@@ -26,4 +26,5 @@
     <string name="reporter">Creador</string>
     <string name="assignee">Responsable</string>
     <string name="author">Autor</string>
+    <string name="add_comment">Añadir comentario</string>
 </resources>
