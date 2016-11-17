@@ -23,6 +23,7 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import me.johnmh.boogdroid.R;
@@ -49,6 +50,7 @@ public abstract class Server {
     private ActionBarActivity activity;
 
     private me.johnmh.boogdroid.db.Server databaseServer = null;
+    private BugStatusChanges changes;
 
     public Server(final String name, final String url, final String type, boolean jsonImplementation) {
         this.type = type;
@@ -179,4 +181,11 @@ public abstract class Server {
     }
 
 
+    public void setChanges(BugStatusChanges changes) {
+        this.changes = changes;
+    }
+
+    public BugStatusChanges getChanges() {
+        return changes;
+    }
 }

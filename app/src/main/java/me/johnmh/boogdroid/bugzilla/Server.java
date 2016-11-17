@@ -19,6 +19,7 @@
 package me.johnmh.boogdroid.bugzilla;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -29,7 +30,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import me.johnmh.boogdroid.general.BugStatusChanges;
+import me.johnmh.boogdroid.general.ChangeStatusCommentRequired;
 import me.johnmh.util.Util.TaskListener;
+
+import static android.R.attr.id;
 
 public class Server extends me.johnmh.boogdroid.general.Server {
 
@@ -60,6 +65,66 @@ public class Server extends me.johnmh.boogdroid.general.Server {
 
         });
         task.execute();
+
+        new BugzillaTask(this, "Bug.fields", "'names':['bug_status']", new TaskListener() {
+            @Override
+            public void doInBackground(Object response) {
+                if (isUseJson()) {
+                    doJsonParse(response);
+                } else {
+                    doXmlParse(response);
+                }
+                doXmlParse(response);
+            }
+
+            private void doJsonParse(Object response) {
+                //TODO: Need a server with json to check this implementation
+                final JSONObject object;
+                try {
+                    object = new JSONObject(response.toString());
+                    JSONArray values = object.getJSONObject("fields").getJSONArray("values");
+                    BugStatusChanges changes = new BugStatusChanges();
+                    for (int i = 0; i < values.length(); i++) {
+                        JSONObject status = values.getJSONObject(i);
+                        String name = status.getString("name");
+                        JSONArray canChangeToList = status.getJSONArray("can_change_to");
+                        ChangeStatusCommentRequired changeCommentRequired = new ChangeStatusCommentRequired();
+                        for (int j = 0; j < canChangeToList.length(); j++) {
+                            JSONObject canChangeToMap = canChangeToList.getJSONObject(j);
+                            changeCommentRequired.put(canChangeToMap.getString("name"), canChangeToMap.getBoolean("comment_required"));
+                        }
+                        changes.put(name, changeCommentRequired);
+                    }
+                    setChanges(changes);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            private void doXmlParse(Object response) {
+                Object[] fields = (Object[]) ((HashMap<String, Object>)response).get("fields");
+                List values = Arrays.asList((Object[]) ((HashMap<String, Object>) fields[0]).get("values"));
+                BugStatusChanges changes = new BugStatusChanges();
+                for (Object value : values) {
+                    HashMap<String, Object> status = (HashMap<String, Object>) value;
+                    String name = (String)status.get("name");
+                    List changeToList = Arrays.asList((Object[])status.get("can_change_to"));
+                    ChangeStatusCommentRequired changeCommentRequired = new ChangeStatusCommentRequired();
+                    for (Object canChangeTo : changeToList) {
+                        HashMap<String, Object> canChangeToMap = (HashMap<String, Object>) canChangeTo;
+                        changeCommentRequired.put((String)canChangeToMap.get("name"), (Boolean)canChangeToMap.get("comment_required"));
+                    }
+                    changes.put(name, changeCommentRequired);
+                }
+                setChanges(changes);
+            }
+
+            @Override
+            public void onPostExecute(Object response) {
+
+            }
+        }).execute();
     }
 
     private void doReadXml(Object response) {
