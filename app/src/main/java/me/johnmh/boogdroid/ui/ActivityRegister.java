@@ -44,7 +44,7 @@ public class ActivityRegister extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
+//        getSupportActionBar().setDisplayShowHomeEnabled(false);
 
         final TypedArray styledAttributes = getTheme().obtainStyledAttributes(new int[]{android.support.v7.appcompat.R.attr.actionBarSize});
         int mActionBarSize = (int)styledAttributes.getDimension(0, 0);
