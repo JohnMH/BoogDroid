@@ -18,8 +18,10 @@
 
 package me.johnmh.boogdroid.bugzilla;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -45,7 +47,9 @@ import java.util.UUID;
 
 import de.timroes.axmlrpc.XMLRPCClient;
 import de.timroes.axmlrpc.XMLRPCException;
+import me.johnmh.boogdroid.R;
 import me.johnmh.boogdroid.general.Server;
+import me.johnmh.boogdroid.ui.Application;
 import me.johnmh.util.Util.TaskListener;
 
 public class BugzillaTask extends AsyncTask<Void, Void, Void> {
@@ -56,6 +60,7 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
     private TaskListener listener;
 
     private Server server;
+    private Context context;
 
     public BugzillaTask(final Server server, final String method, final TaskListener listener) {
         this(server, method, "", listener);
@@ -102,6 +107,8 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
         try {
             response = client.call(method, args == null ? null : new Object[]{args});
         } catch (XMLRPCException e) {
+            Toast.makeText(Application.getAppContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
             e.printStackTrace();
         }
 
@@ -187,7 +194,7 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
             HttpEntity entity = httpClient.execute(httpPost).getEntity();
             response = EntityUtils.toString(entity);
         } catch (final Exception e) {
-            e.printStackTrace();
+            Toast.makeText(Application.getAppContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         listener.doInBackground(response);

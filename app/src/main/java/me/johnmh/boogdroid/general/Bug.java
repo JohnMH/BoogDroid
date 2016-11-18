@@ -46,6 +46,7 @@ public abstract class Bug {
     private BaseAdapter adapter;
     private AppCompatActivity activity;
     private BugInfoFragment fragment;
+    private String resolution;
 
     public abstract void loadComments();
 
@@ -147,5 +148,13 @@ public abstract class Bug {
     @Override
     public String toString() {
         return summary;
+    }
+
+    public String getResolution() {
+        return resolution;
+    }
+
+    public void setResolution(String resolution) {
+        this.resolution = resolution;
     }
 }

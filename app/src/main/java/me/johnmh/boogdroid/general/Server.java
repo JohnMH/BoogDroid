@@ -23,10 +23,10 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import me.johnmh.boogdroid.R;
+import me.johnmh.boogdroid.bugzilla.ChangeStatusInfo;
 import me.johnmh.boogdroid.ui.AdapterProduct;
 
 public abstract class Server {
@@ -50,7 +50,8 @@ public abstract class Server {
     private ActionBarActivity activity;
 
     private me.johnmh.boogdroid.db.Server databaseServer = null;
-    private BugStatusChanges changes;
+    private BugStatusChanges statusChanges;
+    private BugResolutionChanges resolutionValues;
 
     public Server(final String name, final String url, final String type, boolean jsonImplementation) {
         this.type = type;
@@ -181,11 +182,34 @@ public abstract class Server {
     }
 
 
-    public void setChanges(BugStatusChanges changes) {
-        this.changes = changes;
+    public void setStatusChanges(BugStatusChanges changes) {
+        this.statusChanges = changes;
     }
 
-    public BugStatusChanges getChanges() {
-        return changes;
+    public BugStatusChanges getStatusChanges() {
+        return statusChanges;
     }
+
+    public void setResolutionValues(BugResolutionChanges resolutionValues) {
+        this.resolutionValues = resolutionValues;
+    }
+
+    public BugResolutionChanges getResolutionValues() {
+        return resolutionValues;
+    }
+
+    public ChangeStatusInfo findChangeStatusInfo(String statusName) {
+        List<ChangeStatusInfo> changeList = getStatusChanges().get(statusName).getChangeList();
+        for (ChangeStatusInfo changeStatusInfo : changeList) {
+            if (changeStatusInfo.getName().equals(statusName)) {
+                return changeStatusInfo;
+            }
+        }
+        return null;
+    }
+
+    public StatusInfo findStatusInfo(String statusName) {
+        return getStatusChanges().get(statusName);
+    }
+
 }

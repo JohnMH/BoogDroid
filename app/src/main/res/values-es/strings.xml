@@ -27,4 +27,8 @@
     <string name="assignee">Responsable</string>
     <string name="author">Autor</string>
     <string name="add_comment">Añadir comentario</string>
+    <string name="status">Estado:</string>
+    <string name="resolution">Resolución:</string>
+    <string name="invalid_change_status">No se puede cambiar a ese estado</string>
+    <string name="invalid_change_status_comment_required">No se puede cambiar de estado, commentario requerido</string>
 </resources>

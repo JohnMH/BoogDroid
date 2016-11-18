@@ -38,7 +38,7 @@ public class Product extends me.johnmh.boogdroid.general.Product {
 
     @Override
     protected void loadBugs() {
-        final BugzillaTask task = new BugzillaTask(server, "Bug.search", "'product':'" + getName() + "', 'resolution':'', 'limit':0, 'include_fields':['id', 'summary', 'priority', 'status', 'creator', 'assigned_to', 'resolution', 'creation_time']", new TaskListener() {
+        final BugzillaTask task = new BugzillaTask(server, "Bug.search", "'product':'" + getName() + "', 'resolution':'', 'limit':0, 'include_fields':['id', 'summary', 'priority', 'status', 'creator', 'assigned_to', 'resolution', 'creation_time', 'resolution']", new TaskListener() {
             List<me.johnmh.boogdroid.general.Bug> newList = new ArrayList<me.johnmh.boogdroid.general.Bug>();
 
             @Override
@@ -66,6 +66,7 @@ public class Product extends me.johnmh.boogdroid.general.Product {
                             bug.setCreationDate(creationTime);
                             bug.setPriority(bugMap.get("priority").toString());
                             bug.setStatus(bugMap.get("status").toString());
+                            bug.setResolution(bugMap.get("resolution").toString());
                             bug.setReporter(new User(bugMap.get("creator").toString()));
                             bug.setAssignee(new User(bugMap.get("assigned_to").toString()));
                             bug.setOpen(TextUtils.isEmpty(bugMap.get("resolution").toString()));
@@ -96,6 +97,7 @@ public class Product extends me.johnmh.boogdroid.general.Product {
                             bug.setCreationDate(Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("creation_time")));
                             bug.setPriority(json.getString("priority"));
                             bug.setStatus(json.getString("status"));
+                            bug.setResolution(json.getString("resolution"));
                             bug.setReporter(new User(json.getString("creator")));
                             bug.setAssignee(new User(json.getString("assigned_to")));
                             bug.setOpen(TextUtils.isEmpty(json.getString("resolution")));

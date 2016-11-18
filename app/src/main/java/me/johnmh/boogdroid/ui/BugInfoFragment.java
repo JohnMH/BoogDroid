@@ -207,6 +207,8 @@ public class BugInfoFragment extends ListFragment {
         textPriority.setText(bug.getPriority());
         TextView textStatus = (TextView) mainView.findViewById(R.id.status);
         textStatus.setText(bug.getStatus());
+        TextView textResolution = (TextView) mainView.findViewById(R.id.resolution);
+        textResolution.setText(bug.getResolution());
 
         TextView textDescription = (TextView) mainView.findViewById(R.id.description);
         textDescription.setText(bug.getDescription());

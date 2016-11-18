@@ -27,4 +27,8 @@
     <string name="assignee">Assignee</string>
     <string name="author">Author</string>
     <string name="add_comment">Add comment</string>
+    <string name="status">Status:</string>
+    <string name="resolution">Resolution:</string>
+    <string name="invalid_change_status">Cannot change to that status</string>
+    <string name="invalid_change_status_comment_required">Cannot change status, comment required</string>
 </resources>

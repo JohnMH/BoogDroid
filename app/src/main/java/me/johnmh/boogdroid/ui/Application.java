@@ -19,6 +19,8 @@
 package me.johnmh.boogdroid.ui;
 
 
+import android.content.Context;
+
 import com.activeandroid.query.Select;
 
 import java.util.List;
@@ -26,6 +28,8 @@ import java.util.List;
 import me.johnmh.boogdroid.general.Server;
 
 public class Application extends com.activeandroid.app.Application {
+    private static Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -34,5 +38,10 @@ public class Application extends com.activeandroid.app.Application {
         for (final me.johnmh.boogdroid.db.Server s : dbServers) {
             Server.servers.add(new me.johnmh.boogdroid.bugzilla.Server(s));
         }
+        context = getApplicationContext();
+    }
+
+    public static Context getAppContext() {
+        return context;
     }
 }
