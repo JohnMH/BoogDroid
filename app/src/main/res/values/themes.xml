@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.BoogDroid" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.BoogDroid" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Main theme colors -->
         <!--   your app branding color for the app bar -->
         <item name="colorPrimary">#212121</item>
@@ -14,10 +14,6 @@
         <item name="android:textColorTertiary">#4CFFFFFF</item>
         <item name="android:windowBackground">@color/darkBG</item>
         <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.BoogDroid.NoActionBar" parent="Theme.BoogDroid">
-        <item name="windowActionBar">false</item>
-    </style>
 </resources>

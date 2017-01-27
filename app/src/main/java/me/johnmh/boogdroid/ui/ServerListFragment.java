@@ -71,7 +71,6 @@ public class ServerListFragment extends ListFragment {
 
         adapter = new ServerTypeAdapter(getActivity());
         setListAdapter(adapter);
-
         return view;
     }
 

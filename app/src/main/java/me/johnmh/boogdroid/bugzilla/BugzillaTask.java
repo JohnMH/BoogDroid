@@ -86,7 +86,14 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
     private Void doXmlImplementation() {
         XMLRPCClient client = null;
         try {
-            client = new XMLRPCClient(new URL(server.getUrl()+"/xmlrpc.cgi"));
+            String url = server.getUrl();
+            if (!url.startsWith("http")) {
+                url = "https://"+url;
+            }
+            if (!url.endsWith("/xmlrpc.cgi")) {
+                url = url + "/xmlrpc.cgi";
+            }
+            client = new XMLRPCClient(new URL(url));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

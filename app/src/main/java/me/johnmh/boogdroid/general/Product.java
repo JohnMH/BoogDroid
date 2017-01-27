@@ -18,7 +18,7 @@
 
 package me.johnmh.boogdroid.general;
 
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +36,11 @@ public abstract class Product {
     protected final List<Bug> bugs = new ArrayList<Bug>();
 
     private AdapterBug adapter;
-    private ActionBarActivity activity;
+    private AppCompatActivity activity;
 
     protected abstract void loadBugs();
 
-    public void setAdapterBug(final AdapterBug adapter, final ActionBarActivity activity) {
+    public void setAdapterBug(final AdapterBug adapter, final AppCompatActivity activity) {
         this.adapter = adapter;
         this.activity = activity;
 

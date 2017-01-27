@@ -21,7 +21,7 @@ package me.johnmh.boogdroid.ui;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +30,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import java.util.List;
-import java.util.Set;
 
 import me.johnmh.boogdroid.R;
 import me.johnmh.boogdroid.bugzilla.BugzillaTask;
@@ -51,9 +48,7 @@ public class BugStatusFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.bug_status, null, false);
 
-        final ActionBarActivity activity = (ActionBarActivity) getActivity();
-
-        activity.setSupportProgressBarIndeterminateVisibility(true);
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
 
         final Bundle arguments = getArguments();
         final int serverPos;

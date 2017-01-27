@@ -33,10 +33,13 @@ public class Application extends com.activeandroid.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        final List<me.johnmh.boogdroid.db.Server> dbServers = new Select().from(me.johnmh.boogdroid.db.Server.class).execute();
-        Server.servers.clear();
-        for (final me.johnmh.boogdroid.db.Server s : dbServers) {
-            Server.servers.add(new me.johnmh.boogdroid.bugzilla.Server(s));
+        try {
+            final List<me.johnmh.boogdroid.db.Server> dbServers = new Select().from(me.johnmh.boogdroid.db.Server.class).execute();
+            Server.servers.clear();
+            for (final me.johnmh.boogdroid.db.Server s : dbServers) {
+                Server.servers.add(new me.johnmh.boogdroid.bugzilla.Server(s));
+            }
+        } catch (Exception e) {
         }
         context = getApplicationContext();
     }

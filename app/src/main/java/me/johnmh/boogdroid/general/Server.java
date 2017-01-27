@@ -18,7 +18,7 @@
 
 package me.johnmh.boogdroid.general;
 
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public abstract class Server {
     protected String password;
 
     private AdapterProduct adapter;
-    private ActionBarActivity activity;
+    private AppCompatActivity activity;
 
     private me.johnmh.boogdroid.db.Server databaseServer = null;
     private BugStatusChanges statusChanges;
@@ -85,7 +85,7 @@ public abstract class Server {
         this.password = password;
     }
 
-    public void setAdapterProduct(final AdapterProduct adapter, final ActionBarActivity activity) {
+    public void setAdapterProduct(final AdapterProduct adapter, final AppCompatActivity activity) {
         this.adapter = adapter;
         this.activity = activity;
 

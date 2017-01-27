@@ -21,20 +21,22 @@ package me.johnmh.boogdroid.ui;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
 import me.johnmh.boogdroid.R;
 
-public class ActivityServerManager extends ActionBarActivity implements ServerListFragment.OnServerSelectedListener {
+public class ActivityServerManager extends AppCompatActivity implements ServerListFragment.OnServerSelectedListener {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server_manager);
-
-        //getSupportActionBar().setDisplayShowHomeEnabled(false);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         final TypedArray styledAttributes = getTheme().obtainStyledAttributes(new int[]{android.support.v7.appcompat.R.attr.actionBarSize});
         int mActionBarSize = (int)styledAttributes.getDimension(0, 0);
@@ -42,6 +44,7 @@ public class ActivityServerManager extends ActionBarActivity implements ServerLi
 
         RelativeLayout listFrag = (RelativeLayout)findViewById(R.id.server_manager_frag);
         listFrag.setPadding(0, getStatusBarHeight() + mActionBarSize, 0, 0);
+        setTitle("Servers");
     }
 
     public int getStatusBarHeight(){

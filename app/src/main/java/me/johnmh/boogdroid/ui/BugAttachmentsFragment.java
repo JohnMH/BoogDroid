@@ -20,7 +20,7 @@ package me.johnmh.boogdroid.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,9 +44,7 @@ public class BugAttachmentsFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bug_attachments, null, false);
 
-        final ActionBarActivity activity = (ActionBarActivity) getActivity();
-
-        activity.setSupportProgressBarIndeterminateVisibility(true);
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
 
         final Bundle arguments = getArguments();
         final int serverPos;

@@ -20,7 +20,8 @@ package me.johnmh.boogdroid.ui;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
@@ -30,7 +31,7 @@ import android.widget.FrameLayout;
 import me.johnmh.boogdroid.R;
 import me.johnmh.boogdroid.general.Server;
 
-public class ActivityRegister extends ActionBarActivity {
+public class ActivityRegister extends AppCompatActivity {
     private Server server = null;
 
     private EditText nameView;
@@ -43,7 +44,8 @@ public class ActivityRegister extends ActionBarActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+//        setSupportActionBar(toolbar);
 //        getSupportActionBar().setDisplayShowHomeEnabled(false);
 
         final TypedArray styledAttributes = getTheme().obtainStyledAttributes(new int[]{android.support.v7.appcompat.R.attr.actionBarSize});
