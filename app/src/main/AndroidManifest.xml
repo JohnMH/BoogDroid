@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="me.johnmh.boogdroid">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="me.albfan.boogdroid">
     <uses-permission android:name="android.permission.INTERNET" />
     <meta-data android:name="AA_DB_VERSION" android:value="2" />
     <application
-        android:name=".ui.Application"
+        android:name="me.albfan.boogdroid.ui.Application"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.BoogDroid">
 
         <activity
-            android:name=".ui.ActivityServer"
+            android:name="me.albfan.boogdroid.ui.ActivityServer"
             android:label="@string/app_name"
             android:theme="@style/Theme.BoogDroid">
             <intent-filter>
@@ -20,10 +20,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.ActivityServerManager"
+            android:name="me.albfan.boogdroid.ui.ActivityServerManager"
             android:label="@string/manage_servers"
             android:theme="@style/Theme.BoogDroid"/>
-        <activity android:name=".ui.ActivityRegister"
+        <activity android:name="me.albfan.boogdroid.ui.ActivityRegister"
             android:theme="@style/Theme.BoogDroid"/>
     </application>
 
