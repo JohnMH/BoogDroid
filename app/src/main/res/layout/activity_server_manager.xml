@@ -13,7 +13,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
     <fragment
-        android:name="me.albfan.boogdroid.ui.ServerListFragment"
+        android:name="me.johnmh.boogdroid.ui.ServerListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>

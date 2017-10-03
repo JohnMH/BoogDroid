@@ -43,7 +43,7 @@
         android:background="#FFFFFF">
 
         <fragment
-            android:name="me.albfan.boogdroid.ui.LeftMenuFragment"
+            android:name="me.johnmh.boogdroid.ui.LeftMenuFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
