@@ -1,4 +1,11 @@
 language: android
 
 jdk:
-   - oraclejdk8
+  - oraclejdk8
+
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-21.1.2
+    - android-22
