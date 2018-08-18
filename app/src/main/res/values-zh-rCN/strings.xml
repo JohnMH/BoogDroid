@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- GENERAL -->
+    <string name="app_name">BoogDroid</string>
+    <string name="no_items">无元素。</string>
+    <string name="invalid_product">无效产品</string>
+    <string name="invalid_bug">无效 bug</string>
+
+    <!-- REGISTER -->
+    <string name="server_name">服务器名称</string>
+    <string name="url">URL</string>
+    <string name="user_name">用户名</string>
+    <string name="password">密码</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="manage_servers">管理服务器</string>
+    <string name="add_server">添加服务器</string>
+    <string name="edit_server">编辑服务器</string>
+    <string name="name_cant_be_empty">必须输入名称</string>
+    <string name="server_with_that_name_exists">已有同名服务器</string>
+    <string name="url_cant_be_empty">必须输入 URL</string>
+    <string name="delete_server_title">删除服务器 <b>%1$s</b></string>
+    <string name="delete_server_description">服务器 <b>%1$s</b> 及其所有配置信息将被删除。</string>
+
+    <!-- INFO -->
+    <string name="reporter">Reporter</string>
+    <string name="assignee">Assignee</string>
+    <string name="author">作者</string>
+    <string name="add_comment">添加 comment</string>
+    <string name="status">状态：</string>
+    <string name="resolution">分辨率：</string>
+    <string name="invalid_change_status">无法更改至此状态</string>
+    <string name="invalid_change_status_comment_required">无法更改状态，需要 comment</string>
+</resources>
