@@ -3,25 +3,30 @@ import java.util.regex.Pattern
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion '21.1.2'
+    compileSdkVersion 27
+    buildToolsVersion '29.0.2'
 
     defaultConfig {
         versionCode 16
         versionName '0.0.4'
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 27
     }
     lintOptions {
         abortOnError false
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:recyclerview-v7:22.2.1'
-    compile 'com.android.support:design:22.2.1'
-    compile 'com.github.gturri:axmlrpc:master'
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.github.gturri:axmlrpc:master'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 }
