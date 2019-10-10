@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="me.johnmh.boogdroid">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="me.johnmh.boogdroid">
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <meta-data android:name="AA_DB_VERSION" android:value="2" />
+
     <application
         android:name="me.johnmh.boogdroid.ui.Application"
         android:allowBackup="true"
@@ -19,12 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="me.johnmh.boogdroid.ui.ActivityServerManager"
             android:label="@string/manage_servers"
-            android:theme="@style/Theme.BoogDroid"/>
-        <activity android:name="me.johnmh.boogdroid.ui.ActivityRegister"
-            android:theme="@style/Theme.BoogDroid"/>
+            android:theme="@style/Theme.BoogDroid" />
+
+        <activity
+            android:name="me.johnmh.boogdroid.ui.ActivityRegister"
+            android:theme="@style/Theme.BoogDroid" />
     </application>
 
 </manifest>
