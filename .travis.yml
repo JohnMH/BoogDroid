@@ -12,7 +12,7 @@ git:
   depth: 1
 
 before_install:
-  - yes | sdkmanager "platforms;android-27"
+  - yes | sdkmanager --licenses
 
 android:
   components:
