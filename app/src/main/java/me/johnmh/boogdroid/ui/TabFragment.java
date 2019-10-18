@@ -12,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import me.johnmh.boogdroid.R;
+import ws.lamm.bugdroid.ui.BugAttachmentsFragment;
+import ws.lamm.bugdroid.ui.BugAttributesFragment;
+import ws.lamm.bugdroid.ui.BugInfoFragment;
 
 public class TabFragment extends Fragment {
 

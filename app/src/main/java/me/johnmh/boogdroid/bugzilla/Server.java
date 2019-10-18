@@ -31,7 +31,8 @@ import java.util.List;
 import me.johnmh.boogdroid.general.BugResolutionChanges;
 import me.johnmh.boogdroid.general.BugStatusChanges;
 import me.johnmh.boogdroid.general.StatusInfo;
-import me.johnmh.util.Util.TaskListener;
+import ws.lamm.util.Util.TaskListener;
+import ws.lamm.bugdroid.bugzilla.BugzillaTask;
 
 public class Server extends me.johnmh.boogdroid.general.Server {
 

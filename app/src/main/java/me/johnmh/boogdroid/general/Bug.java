@@ -24,7 +24,7 @@ import android.widget.BaseAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.johnmh.boogdroid.ui.BugInfoFragment;
+import ws.lamm.bugdroid.ui.BugInfoFragment;
 
 public abstract class Bug {
     protected int id;

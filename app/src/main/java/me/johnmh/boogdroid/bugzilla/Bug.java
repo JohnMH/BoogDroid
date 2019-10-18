@@ -27,8 +27,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import me.johnmh.util.Util;
-import me.johnmh.util.Util.TaskListener;
+import ws.lamm.util.Util;
+import ws.lamm.util.Util.TaskListener;
+import ws.lamm.bugdroid.bugzilla.BugzillaTask;
 
 public class Bug extends me.johnmh.boogdroid.general.Bug {
 
@@ -68,9 +69,9 @@ public class Bug extends me.johnmh.boogdroid.general.Bug {
                                 }
 
                                 if (json.has("creation_time")) {
-                                    comment.setDate(Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("creation_time")));
+                                    comment.setDate(Util.INSTANCE.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("creation_time")));
                                 } else {
-                                    comment.setDate(Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("time")));
+                                    comment.setDate(Util.INSTANCE.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("time")));
                                 }
 
                                 if (json.has("count")) {

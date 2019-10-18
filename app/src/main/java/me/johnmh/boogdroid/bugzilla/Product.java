@@ -30,8 +30,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import me.johnmh.util.Util;
-import me.johnmh.util.Util.TaskListener;
+import ws.lamm.util.Util;
+import ws.lamm.util.Util.TaskListener;
+import ws.lamm.bugdroid.bugzilla.BugzillaTask;
 
 public class Product extends me.johnmh.boogdroid.general.Product {
 
@@ -93,7 +94,7 @@ public class Product extends me.johnmh.boogdroid.general.Product {
                         try {
                             bug.setId(json.getInt("id"));
                             bug.setSummary(json.getString("summary"));
-                            bug.setCreationDate(Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("creation_time")));
+                            bug.setCreationDate(Util.INSTANCE.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("creation_time")));
                             bug.setPriority(json.getString("priority"));
                             bug.setStatus(json.getString("status"));
                             bug.setResolution(json.getString("resolution"));

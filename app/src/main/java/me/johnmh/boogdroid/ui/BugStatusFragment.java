@@ -32,13 +32,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import me.johnmh.boogdroid.R;
-import me.johnmh.boogdroid.bugzilla.BugzillaTask;
+import ws.lamm.bugdroid.bugzilla.BugzillaTask;
 import me.johnmh.boogdroid.bugzilla.ChangeStatusInfo;
 import me.johnmh.boogdroid.general.Bug;
 import me.johnmh.boogdroid.general.BugResolutionChanges;
 import me.johnmh.boogdroid.general.StatusInfo;
 import me.johnmh.boogdroid.general.Server;
-import me.johnmh.util.Util;
+import ws.lamm.util.Util;
 
 
 public class BugStatusFragment extends Fragment {
