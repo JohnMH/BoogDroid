@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="me.johnmh.boogdroid.ui.Application"
+        android:name="ws.lamm.bugdroid.Application"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_black_24dp"
         android:label="@string/app_name"

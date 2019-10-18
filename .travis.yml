@@ -6,7 +6,7 @@ jdk:
 env:
   global:
     - ANDROID_API_LEVEL=27
-    - ANDROID_BUILD_TOOLS_VERSION=29.0.2
+    - ANDROID_BUILD_TOOLS_VERSION=27.1.1
 
 git:
   depth: 1
