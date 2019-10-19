@@ -16,22 +16,32 @@ object BuildPlugins {
 
 object AndroidSdk {
     const val min = 27
-    const val compile = 27
-    const val target = compile
+    const val compile = 29
+    const val target = 27
 }
 
 object Libraries {
     private object Versions {
-        const val jetpack = "27.1.1"
-        const val gson = "2.8.5"
         const val activeandroid = "3.1.0-SNAPSHOT"
+        const val gson = "2.8.5"
+        const val jetpack = "27.1.1"
+        const val kodein = "6.4.1"
+    }
+
+    object AndroidSupport {
+        const val appcompat = "com.android.support:appcompat-v7:${Versions.jetpack}"
+        const val design = "com.android.support:design:${Versions.jetpack}"
+        const val recycleview =  "com.android.support:recyclerview-v7:${Versions.jetpack}"
+    }
+
+    object KodeinDI {
+        const val genericJvm = "org.kodein.di:kodein-di-generic-jvm:${Versions.kodein}"
+        const val frameworkAndroidCore = "org.kodein.di:kodein-di-framework-android-core:${Versions.kodein}"
+        const val frameworkAndroidSupport = "org.kodein.di:kodein-di-framework-android-support:${Versions.kodein}"
     }
 
     const val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
-    const val appCompat = "com.android.support:appcompat-v7:${Versions.jetpack}"
-    const val design = "com.android.support:design:${Versions.jetpack}"
-    const val recycleView =  "com.android.support:recyclerview-v7:${Versions.jetpack}"
     const val axmlrpc = "com.github.gturri:axmlrpc:master"
     const val gson = "com.google.code.gson:gson:${Versions.gson}"
     const val activeandroid = "com.michaelpardo:activeandroid:${Versions.activeandroid}"
@@ -39,17 +49,21 @@ object Libraries {
 
 object TestLibraries {
     private object Versions {
-        const val junit = "5.5.2"
         const val assertj = "3.13.2"
+        const val junit = "5.5.2"
     }
 
-    const val kotlinTestCommon = "org.jetbrains.kotlin:kotlin-test-common:$kotlinVersion"
-    const val kotlinTestAnnotationsCommon = "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlinVersion"
-    const val kotlinTestJunit5 ="org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion"
+    object KotlinTest {
+        const val common = "org.jetbrains.kotlin:kotlin-test-common:$kotlinVersion"
+        const val annotationsCommon = "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlinVersion"
+        const val junit5 ="org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion"
+    }
 
-    const val junitJupiterApi = "org.junit.jupiter:junit-jupiter-api:${Versions.junit}"
-    const val junitJupiterParams = "org.junit.jupiter:junit-jupiter-params:${Versions.junit}"
-    const val junitJupiterEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit}"
+    object JunitJupiter {
+        const val api = "org.junit.jupiter:junit-jupiter-api:${Versions.junit}"
+        const val params = "org.junit.jupiter:junit-jupiter-params:${Versions.junit}"
+        const val engine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit}"
+    }
 
     const val assertjCore = "org.assertj:assertj-core:${Versions.assertj}"
 }
