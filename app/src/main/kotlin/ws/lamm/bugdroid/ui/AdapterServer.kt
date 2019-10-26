@@ -1,4 +1,4 @@
-package ws.lamm.bugdroid.ui.ui
+package ws.lamm.bugdroid.ui
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 
-import me.johnmh.boogdroid.R
-import ws.lamm.bugdroid.general.Server
+import ws.lamm.bugdroid.R
+import ws.lamm.bugdroid.bugzilla.Server
 
 
 class AdapterServer(private val listener: LeftMenuFragment.OnServerSelectedListener, private val showServerManager: Boolean) : RecyclerView.Adapter<AdapterServer.ViewHolder>() {

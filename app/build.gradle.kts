@@ -1,7 +1,9 @@
 plugins {
     id(BuildPlugins.androidApplication)
     id(BuildPlugins.kotlinAndroid)
+    id(BuildPlugins.kotlinKapt)
     id(BuildPlugins.kotlinAndroidExtensions)
+    id("io.objectbox")
     id("de.mannodermaus.android-junit5")
 }
 
@@ -14,6 +16,15 @@ android {
         targetSdkVersion(AndroidSdk.target)
         versionCode = 1
         versionName = "0.0.4"
+
+        sourceSets.getByName("main") {
+            java.srcDir("src/main/kotlin")
+        }
+
+        sourceSets.getByName("test") {
+            java.srcDir("src/test/kotlin")
+        }
+
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -41,7 +52,7 @@ dependencies {
     implementation(Libraries.AndroidSupport.design)
     implementation(Libraries.AndroidSupport.recycleview)
     implementation(Libraries.axmlrpc)
-    implementation(Libraries.gson)
+
     implementation(Libraries.activeandroid)
 
     implementation(Libraries.KodeinDI.genericJvm)

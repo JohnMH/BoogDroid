@@ -1,15 +1,16 @@
-package ws.lamm.bugdroid.ui.ui
+package ws.lamm.bugdroid.ui
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import me.johnmh.boogdroid.R
-import ws.lamm.bugdroid.general.Bug
+import ws.lamm.bugdroid.R
+import ws.lamm.bugdroid.bugzilla.Bug
 
-class AdapterBug(context: Context, list: List<Bug>) : ArrayContainsAdapter<Bug>(context, R.layout.adapter_bug, list) {
-    private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+class AdapterBug(androidContext: Context, list: MutableList<Bug>) : ArrayContainsAdapter<Bug>(androidContext, R.layout.adapter_bug, list) {
+
+    private val inflater: LayoutInflater = androidContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView

@@ -1,5 +1,15 @@
 package ws.lamm.bugdroid.bugzilla
 
-import ws.lamm.bugdroid.general.Comment
+class Comment {
+    var id: Int = 0
+    var text: String = ""
+    lateinit var author: User
+    var date: String = ""
+    var number = 0
 
-class Comment : Comment()
+    var bug: Bug = Bug()
+
+    override fun toString(): String {
+        return text
+    }
+}

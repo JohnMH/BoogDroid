@@ -1,21 +1,153 @@
 package ws.lamm.bugdroid.bugzilla
 
-import ws.lamm.bugdroid.general.BugResolutionChanges
-import ws.lamm.bugdroid.general.BugStatusChanges
-import ws.lamm.bugdroid.general.StatusInfo
+import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
 import org.json.JSONException
 import org.json.JSONObject
+import ws.lamm.bugdroid.R
 import ws.lamm.bugdroid.db.Server
+import ws.lamm.bugdroid.orm.BugzillaServer
+import ws.lamm.bugdroid.ui.AdapterProduct
 import ws.lamm.util.Util.TaskListener
 import java.util.*
 
-class Server : ws.lamm.bugdroid.general.Server {
+class Server {
 
-    constructor(name: String, url: String, jsonImplementation: Boolean) : super(name, url, BUGZILLA, jsonImplementation)
+    val products: MutableList<Product> = ArrayList()
+    var type: String
+    private var jsonImplementation: Boolean = false
+    var name: String
+    var url: String? = null
+    var user: String? = null
+    var password: String? = null
 
-    constructor(server: Server) : super(server)
+    private var adapter: AdapterProduct? = null
+    private var activity: AppCompatActivity? = null
 
-    override fun loadProducts() {
+    private var databaseServer: Server? = null
+    var statusChanges = HashMap<String?, StatusInfo>()
+    var bugResolutionChanges: ArrayList<String>? = null
+
+    var isUseJson: Boolean?
+        get() = jsonImplementation
+        set(useJson) {
+            this.jsonImplementation = useJson!!
+        }
+
+    constructor(name: String, url: String, type: String, jsonImplementation: Boolean) {
+        this.type = type
+        this.name = name
+        this.url = url
+        user = ""
+        password = ""
+        this.jsonImplementation = jsonImplementation
+    }
+
+    constructor(name: String, url: String, jsonImplementation: Boolean) : this(name, url, BUGZILLA, jsonImplementation)
+
+    constructor(server: Server) {
+        databaseServer = server
+        type = server.type
+        name = server.name
+        url = server.url
+        user = server.user
+        password = server.password
+        //jsonImplementation = if (server.json == null) false else server.json
+    }
+
+    fun setUser(user: String, password: String) {
+        this.user = user
+        this.password = password
+    }
+
+    fun setAdapterProduct(adapter: AdapterProduct, activity: AppCompatActivity) {
+        this.adapter = adapter
+        this.activity = activity
+
+        activity.setSupportProgressBarIndeterminateVisibility(true)
+        loadProducts()
+    }
+
+    fun getProductFromId(productId: Int): Product? {
+        for (p in products) {
+            if (p.id == productId) {
+                return p
+            }
+        }
+
+        return null
+    }
+
+    fun getBugFromId(bugId: Int): Bug? {
+        for (p in products) {
+            for (b in p.bugs) {
+                if (b.id == bugId) {
+                    return b
+                }
+            }
+        }
+
+        return null
+    }
+
+    fun save() {
+        if (databaseServer == null) {
+            databaseServer = Server()
+        }
+        databaseServer!!.type = type
+        databaseServer!!.name = name
+        databaseServer!!.url = url
+        databaseServer!!.user = user
+        databaseServer!!.password = password
+        databaseServer!!.save()
+    }
+
+    fun delete() {
+        if (databaseServer != null) {
+            databaseServer!!.delete()
+        }
+    }
+
+    override fun toString(): String {
+        //return name
+        return ""
+    }
+
+    fun hasUser(): Boolean {
+        return !TextUtils.isEmpty(user)
+    }
+
+    protected fun productsListUpdated() {
+        adapter!!.notifyDataSetChanged()
+        activity!!.setSupportProgressBarIndeterminateVisibility(false)
+    }
+
+    fun findChangeStatusInfo(statusName: String): ChangeStatusInfo? {
+        val changeList = statusChanges!![statusName]!!.changeList
+//        for (changeStatusInfo in changeList) {
+//            if (changeStatusInfo.name == statusName) {
+//                return changeStatusInfo
+//            }
+//        }
+        return null
+    }
+
+    fun findStatusInfo(statusName: String): StatusInfo? {
+        return statusChanges!![statusName]
+    }
+    companion object {
+        const val BUGZILLA = "Bugzilla"
+
+        private const val BUGZILLA_ICON = R.drawable.server_icon_bugzilla
+        var servers: MutableList<BugzillaServer> = ArrayList()
+        var typeName = listOf(BUGZILLA)
+        var typeIcon = listOf(BUGZILLA_ICON)
+
+
+
+    }
+
+    fun loadProducts() {
         val task = BugzillaTask(this, "Product.get_accessible_products", object : TaskListener {
             override fun doInBackground(response: Any?) {}
 
@@ -64,7 +196,7 @@ class Server : ws.lamm.bugdroid.general.Server {
             @Throws(JSONException::class)
             private fun loadStatusJson(field: JSONObject) {
                 val values = field.getJSONArray("values")
-                val changes = BugStatusChanges()
+                val bugStatusChanges1 = HashMap<String?, StatusInfo>()
                 for (j in 0 until values.length()) {
                     val status = values.getJSONObject(j)
                     val name = status.getString("name")
@@ -81,21 +213,21 @@ class Server : ws.lamm.bugdroid.general.Server {
                     }
                     statusInfo.changeList = changeStatusInfoList
                     statusInfo.isOpen = status.getBoolean("is_open")
-                    changes[name] = statusInfo
+                    bugStatusChanges1[name] = statusInfo
                 }
-                statusChanges = changes
+                statusChanges = bugStatusChanges1
             }
 
             @Throws(JSONException::class)
             private fun loadResolutionJson(field: JSONObject) {
                 val values = field.getJSONArray("values")
-                val resolution = BugResolutionChanges()
+                val resolution = ArrayList<String>()
                 for (j in 0 until values.length()) {
                     val status = values.getJSONObject(j)
                     val name = status.getString("name")
                     resolution.add(name)
                 }
-                resolutionValues = resolution
+                bugResolutionChanges = resolution
             }
 
             private fun doXmlParse(response: Any?) {
@@ -113,7 +245,7 @@ class Server : ws.lamm.bugdroid.general.Server {
 
             private fun loadStatusXml(fieldMap: HashMap<String, Any>) {
                 val values = listOf(*(fieldMap["values"] as Array<Any>?)!!)
-                val changes = BugStatusChanges()
+                val changes = HashMap<String?, StatusInfo>()
                 for (value in values) {
                     val status = value as HashMap<String, Any>
                     val name = status["name"] as String
@@ -137,13 +269,13 @@ class Server : ws.lamm.bugdroid.general.Server {
 
             private fun loadResolutionXml(fieldMap: HashMap<String, Any>) {
                 val values = listOf(*(fieldMap["values"] as Array<Any>?)!!)
-                val changes = BugResolutionChanges()
+                val changes = ArrayList<String>()
                 for (value in values) {
                     val resolution = value as HashMap<String, Any>
                     val name = resolution["name"] as String
                     changes.add(name)
                 }
-                resolutionValues = changes
+                bugResolutionChanges = changes
             }
 
             override fun onPostExecute(response: Any?) {
@@ -184,7 +316,7 @@ class Server : ws.lamm.bugdroid.general.Server {
 
     private fun loadProductsFromIds(productIds: String) {
         val task = BugzillaTask(this, "Product.get", "'ids':$productIds,'include_fields':['id', 'name', 'description']", object : TaskListener {
-            var newList: MutableList<ws.lamm.bugdroid.general.Product> = ArrayList()
+            var newList: MutableList<Product> = ArrayList()
 
             override fun doInBackground(response: Any?) {
                 if (isUseJson!!) {

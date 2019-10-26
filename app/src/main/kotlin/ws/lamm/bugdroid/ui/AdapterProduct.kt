@@ -1,4 +1,4 @@
-package ws.lamm.bugdroid.ui.ui
+package ws.lamm.bugdroid.ui
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,8 +10,8 @@ import android.widget.TextView
 
 import java.util.ArrayList
 
-import me.johnmh.boogdroid.R
-import ws.lamm.bugdroid.general.Product
+import ws.lamm.bugdroid.R
+import ws.lamm.bugdroid.bugzilla.Product
 
 class AdapterProduct(private val fullValues: List<Product>, private val fragment: ProductListFragment) : RecyclerView.Adapter<AdapterProduct.ViewHolder>(), Filterable {
     private var values: List<Product>? = null

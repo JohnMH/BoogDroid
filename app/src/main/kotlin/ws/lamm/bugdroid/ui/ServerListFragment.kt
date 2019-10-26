@@ -1,4 +1,4 @@
-package ws.lamm.bugdroid.ui.ui
+package ws.lamm.bugdroid.ui
 
 import android.app.Activity
 import android.content.Context
@@ -15,8 +15,8 @@ import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 
-import me.johnmh.boogdroid.R
-import ws.lamm.bugdroid.general.Server
+import ws.lamm.bugdroid.R
+import ws.lamm.bugdroid.bugzilla.Server
 
 class ServerListFragment : ListFragment() {
     private var listener: OnServerSelectedListener? = null

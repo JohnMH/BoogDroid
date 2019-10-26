@@ -1,4 +1,4 @@
-package ws.lamm.bugdroid.ui.ui
+package ws.lamm.bugdroid.ui
 
 import android.app.Activity
 import android.os.Bundle
@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import me.johnmh.boogdroid.R
+import ws.lamm.bugdroid.R
 
 class LeftMenuFragment : Fragment() {
     private var listener: OnServerSelectedListener? = null

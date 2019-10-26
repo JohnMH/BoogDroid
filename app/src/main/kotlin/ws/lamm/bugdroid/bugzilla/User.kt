@@ -1,8 +1,18 @@
 package ws.lamm.bugdroid.bugzilla
 
-import ws.lamm.bugdroid.general.User
+class User(email: String) {
 
-class User(email: String) : User() {
+// Real live example
+// "email" : "expeditioneer",   // not usable since domain not given
+// "id" : 93460,
+// "name" : "expeditioneer",
+// "real_name" : "Dennis Lamm"
+
+    var id: Int = 0
+    lateinit var name: String
+    var email: String? = null
+    var avatarUrl: String? = null
+
     init {
         name = email
         this.email = email

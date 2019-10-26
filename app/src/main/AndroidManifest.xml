@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.johnmh.boogdroid">
+    package="ws.lamm.bugdroid">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,7 +12,7 @@
         android:theme="@style/Theme.BoogDroid">
 
         <activity
-            android:name="ws.lamm.bugdroid.ui.ui.ActivityServer"
+            android:name="ws.lamm.bugdroid.ui.ActivityServer"
             android:label="@string/app_name"
             android:theme="@style/Theme.BoogDroid">
             <intent-filter>
@@ -23,12 +23,12 @@
         </activity>
 
         <activity
-            android:name="ws.lamm.bugdroid.ui.ui.ActivityServerManager"
+            android:name="ws.lamm.bugdroid.ui.ActivityServerManager"
             android:label="@string/manage_servers"
             android:theme="@style/Theme.BoogDroid" />
 
         <activity
-            android:name="me.johnmh.boogdroid.ws.lamm.bugdroid.ui.ActivityRegister"
+            android:name="ws.lamm.bugdroid.ui.ActivityRegister"
             android:theme="@style/Theme.BoogDroid" />
     </application>
 

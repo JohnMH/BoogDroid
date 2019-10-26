@@ -1,4 +1,4 @@
-package ws.lamm.bugdroid.ui.ui
+package ws.lamm.bugdroid.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,11 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import me.johnmh.boogdroid.R
+import ws.lamm.bugdroid.R
 import ws.lamm.bugdroid.bugzilla.BugzillaTask
 import ws.lamm.bugdroid.bugzilla.ChangeStatusInfo
-import ws.lamm.bugdroid.general.Bug
-import ws.lamm.bugdroid.general.Server
+import ws.lamm.bugdroid.bugzilla.Bug
+import ws.lamm.bugdroid.bugzilla.Server
 import ws.lamm.util.Util
 
 
@@ -81,7 +81,7 @@ class BugStatusFragment : Fragment() {
 
     private fun setupSpinnerResolution(view: View): Spinner {
         val spinnerResolution = view.findViewById<View>(R.id.resolution) as Spinner
-        val resolutionValues = bug!!.product.server.resolutionValues
+        val resolutionValues = bug!!.product.server.bugResolutionChanges
         val adapter = ArrayAdapter(activity!!.baseContext, android.R.layout.simple_spinner_item, resolutionValues!!)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerResolution.adapter = adapter

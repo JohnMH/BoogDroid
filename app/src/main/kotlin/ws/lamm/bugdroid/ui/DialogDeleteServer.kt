@@ -1,4 +1,4 @@
-package ws.lamm.bugdroid.ui.ui
+package ws.lamm.bugdroid.ui
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.text.Html
 import android.widget.BaseAdapter
-import me.johnmh.boogdroid.R
-import ws.lamm.bugdroid.general.Server
+import ws.lamm.bugdroid.R
+import ws.lamm.bugdroid.bugzilla.Server
 
 class DialogDeleteServer : DialogFragment() {
     private var serverPos: Int = 0

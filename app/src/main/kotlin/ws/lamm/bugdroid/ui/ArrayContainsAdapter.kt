@@ -1,4 +1,4 @@
-package ws.lamm.bugdroid.ui.ui
+package ws.lamm.bugdroid.ui
 
 import android.content.Context
 import android.util.Log
@@ -27,16 +27,14 @@ import java.util.*
  * To use something other than TextViews for the array display, for instance, ImageViews,
  * or to have some of data besides toString() results fill the views,
  * override [.getView] to return the type of view you want.
- */
-open class ArrayContainsAdapter<T>
-/**
- * Constructor
  *
  * @param context The current context.
  * @param resource The resource ID for a layout file containing a TextView to use when
  * instantiating views.
  * @param objects The objects to represent in the ListView.
- */(context: Context, resource: Int, objects: MutableList<T>) : BaseAdapter(), Filterable {
+ *
+ */
+abstract class ArrayContainsAdapter<T>(context: Context, resource: Int, objects: MutableList<T>) : BaseAdapter(), Filterable {
     /**
      * Contains the list of objects that represent the data of this ArrayAdapter.
      * The content of this list is referred to as "the array" in the documentation.
@@ -82,7 +80,7 @@ open class ArrayContainsAdapter<T>
      *
      * @return The Context associated with this adapter.
      */
-    var context: Context? = null
+    lateinit var context: Context
         private set
 
     // A copy of the original mObjects array, initialized from and then used instead as soon as
@@ -93,7 +91,7 @@ open class ArrayContainsAdapter<T>
     private var mInflater: LayoutInflater? = null
 
     init {
-        init(context, resource, 0, objects)
+        init(context, resource, objects)
     }
 
     /**
@@ -135,13 +133,13 @@ open class ArrayContainsAdapter<T>
         mNotifyOnChange = notifyOnChange
     }
 
-    private fun init(context: Context, resource: Int, textViewResourceId: Int, objects: MutableList<T>) {
+    private fun init(context: Context, resource: Int, objects: MutableList<T>) {
         this.context = context
         mInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         mDropDownResource = resource
         mResource = mDropDownResource
         mObjects = objects
-        mFieldId = textViewResourceId
+        mFieldId = 0
     }
 
     /**
@@ -163,13 +161,6 @@ open class ArrayContainsAdapter<T>
      */
     override fun getItemId(position: Int): Long {
         return position.toLong()
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
-        return createViewFromResource(position, convertView, parent, mResource)
     }
 
     private fun createViewFromResource(position: Int, convertView: View?, parent: ViewGroup,

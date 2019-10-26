@@ -1,4 +1,4 @@
-package ws.lamm.bugdroid.general
+package ws.lamm.bugdroid.bugzilla
 
 import ws.lamm.bugdroid.bugzilla.ChangeStatusInfo
 

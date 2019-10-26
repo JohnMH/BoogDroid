@@ -1,4 +1,4 @@
-package ws.lamm.bugdroid.ui.ui
+package ws.lamm.bugdroid.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,9 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.ProgressBar
-import me.johnmh.boogdroid.R
-import ws.lamm.bugdroid.general.Server
+import ws.lamm.bugdroid.R
+import ws.lamm.bugdroid.bugzilla.Server
+import ws.lamm.bugdroid.ui.fragments.TabFragment
 
 class ActivityServer : AppCompatActivity(), ProductListFragment.OnProductSelectedListener, BugListFragment.OnBugSelectedListener, LeftMenuFragment.OnServerSelectedListener {
     private var serverPos: Int = 0

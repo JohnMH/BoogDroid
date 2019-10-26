@@ -1,0 +1,80 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "2:7862034010815710806",
+      "lastPropertyId": "9:7772339440951476551",
+      "name": "BugzillaServer",
+      "properties": [
+        {
+          "id": "1:2380405378438113026",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3004251184262641404",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "3:8690120115529302002",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "4:4984004823334501896",
+          "name": "url",
+          "type": 9
+        },
+        {
+          "id": "5:3615969730419355153",
+          "name": "user",
+          "type": 9
+        },
+        {
+          "id": "6:6051903386343861650",
+          "name": "password",
+          "type": 9
+        },
+        {
+          "id": "7:7161284158351055896",
+          "name": "apiKey",
+          "type": 9
+        },
+        {
+          "id": "9:7772339440951476551",
+          "name": "webService",
+          "type": 5,
+          "flags": 2
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:7862034010815710806",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [
+    6285264736685017841
+  ],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    3373952658997733106,
+    6664615137849628806,
+    899647361606009832,
+    1645500474011376300,
+    6379890477614026991,
+    8331200091527235946,
+    8859174623756551489,
+    8610228259752820143,
+    4880342680882070143
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}

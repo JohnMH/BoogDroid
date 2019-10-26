@@ -1,17 +1,60 @@
 package ws.lamm.bugdroid.bugzilla
 
+import android.support.v7.app.AppCompatActivity
+import android.widget.BaseAdapter
 import org.json.JSONObject
-import ws.lamm.bugdroid.general.Bug
+import ws.lamm.bugdroid.ui.BugInfoFragment
 import ws.lamm.util.Util
 import ws.lamm.util.Util.TaskListener
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Bug : Bug() {
+class Bug {
 
-    override fun loadComments() {
+    var id: Int = 0
+    var isOpen: Boolean = false
+
+    lateinit var summary: String
+    var priority: String? = null
+    lateinit var status: String
+    var description: String? = null
+        protected set
+    lateinit var creationDate: String
+
+    lateinit var reporter: User
+    var assignee: User? = null
+
+    val comments: MutableList<Comment> = ArrayList()
+
+    lateinit var product: Product
+
+    private var adapter: BaseAdapter? = null
+    private var activity: AppCompatActivity? = null
+    private var fragment: BugInfoFragment? = null
+    var resolution: String? = null
+
+    fun setAdapterComment(adapter: BaseAdapter, activity: AppCompatActivity, fragment: BugInfoFragment) {
+        this.adapter = adapter
+        this.activity = activity
+        this.fragment = fragment
+
+        activity.setSupportProgressBarIndeterminateVisibility(true)
+        loadComments()
+    }
+
+    protected fun commentsListUpdated() {
+        adapter!!.notifyDataSetChanged()
+        activity!!.setSupportProgressBarIndeterminateVisibility(false)
+        fragment!!.updateView()
+    }
+
+    override fun toString(): String {
+        return summary
+    }
+
+    fun loadComments() {
         val task = BugzillaTask(product.server, "Bug.comments", "'ids':[$id]", object : TaskListener {
-            var newList: MutableList<ws.lamm.bugdroid.general.Comment> = ArrayList()
+            var newList: MutableList<Comment> = ArrayList()
 
             override fun doInBackground(response: Any?) {
                 if (product.server.isUseJson!!) {

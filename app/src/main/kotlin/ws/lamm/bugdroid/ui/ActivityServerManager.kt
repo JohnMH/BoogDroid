@@ -1,4 +1,4 @@
-package ws.lamm.bugdroid.ui.ui
+package ws.lamm.bugdroid.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.RelativeLayout
-import me.johnmh.boogdroid.R
-import ws.lamm.bugdroid.ui.ActivityRegister
+import ws.lamm.bugdroid.R
 
 class ActivityServerManager : AppCompatActivity(), ServerListFragment.OnServerSelectedListener {
 

@@ -8,11 +8,24 @@ import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.FrameLayout
-import me.johnmh.boogdroid.R
-import ws.lamm.bugdroid.general.Server
+import io.objectbox.Box
+import org.kodein.di.KodeinAware
+import ws.lamm.bugdroid.R
+import ws.lamm.bugdroid.bugzilla.Server
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
+import ws.lamm.bugdroid.orm.BugzillaServer
+import ws.lamm.bugdroid.orm.WebService
 
-class ActivityRegister : AppCompatActivity() {
-    private var server: Server? = null
+
+class ActivityRegister : AppCompatActivity(), KodeinAware {
+
+    override val kodein by kodein()
+
+    // TODO: not sure how ObjectBox is working under tha-hood
+    val bugzillaServerBox: Box<BugzillaServer> by instance()
+
+    private var server: BugzillaServer = BugzillaServer("","")
 
     private var nameView: EditText? = null
     private var urlView: EditText? = null
@@ -55,12 +68,12 @@ class ActivityRegister : AppCompatActivity() {
             setTitle(R.string.add_server)
         } else {
             setTitle(R.string.edit_server)
-            server = Server.servers[serverPos]
-            nameView!!.setText(server!!.name)
-            urlView!!.setText(server!!.url)
-            userView!!.setText(server!!.user)
-            passwordView!!.setText(server!!.password)
-            useJsonView!!.isActivated = server!!.isUseJson!!
+            val server = Server.servers[serverPos]
+            nameView!!.setText(server.name)
+            urlView!!.setText(server.url)
+            userView!!.setText(server.user)
+            passwordView!!.setText(server.password)
+            useJsonView!!.isActivated = server.webService == WebService.JSON
         }
     }
 
@@ -100,19 +113,20 @@ class ActivityRegister : AppCompatActivity() {
     }
 
     private fun editServer(name: String, url: String, user: String, password: String, useJsonImplementation: Boolean?) {
-        server!!.name = name
-        server!!.url = url
-        server!!.setUser(user, password)
-        server!!.isUseJson = useJsonImplementation
-        server!!.save()
+        server.name = name
+        server.url = url
+        server.user = user
+        server.password = password
+        server.webService = WebService.REST // TODO: fix this
+        //server.save()
         finish()
     }
 
     private fun registerServer(name: String, url: String, user: String, password: String, jsonImplementation: Boolean) {
-        val newServer = ws.lamm.bugdroid.bugzilla.Server(name, url, jsonImplementation)
+        val newServer = Server(name, url, jsonImplementation)
         newServer.setUser(user, password)
         newServer.save()
-        Server.servers.add(newServer)
+        //Server.servers.add(newServer)
 
         finish()
     }

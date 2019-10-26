@@ -1,23 +1,33 @@
 package ws.lamm.bugdroid.bugzilla
 
+import android.content.Context
 import android.os.AsyncTask
 import android.widget.Toast
 import de.timroes.axmlrpc.XMLRPCClient
 import de.timroes.axmlrpc.XMLRPCException
-import ws.lamm.bugdroid.general.Server
-import ws.lamm.util.Util.TaskListener
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.StringEntity
 import org.apache.http.util.EntityUtils
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.kcontext
 import ws.lamm.bugdroid.Application
+import ws.lamm.bugdroid.bugzilla.Server
+import ws.lamm.util.Util.TaskListener
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.*
 
-class BugzillaTask(private val server: Server, private val method: String, private var params: String?, private val listener: TaskListener) : AsyncTask<Void, Void, Void>() {
+class BugzillaTask(private val server: Server, private val method: String, private var params: String?, private val listener: TaskListener, private val androidContext: Context = Application.appContext)
+    : AsyncTask<Void, Void, Void>(), KodeinAware {
+
+    override val kodein by kodein(androidContext)
+
+
     private var response: Any? = null
 
     constructor(server: Server, method: String, listener: TaskListener) : this(server, method, "", listener)
@@ -35,10 +45,10 @@ class BugzillaTask(private val server: Server, private val method: String, priva
         var client: XMLRPCClient? = null
         try {
             var url = server.url
-            if (!url.startsWith("http")) {
+            if (!url?.startsWith("http")!!) {
                 url = "https://$url"
             }
-            if (!url.endsWith("/xmlrpc.cgi")) {
+            if (!url?.endsWith("/xmlrpc.cgi")) {
                 url = "$url/xmlrpc.cgi"
             }
             client = XMLRPCClient(URL(url))
@@ -46,15 +56,15 @@ class BugzillaTask(private val server: Server, private val method: String, priva
             e.printStackTrace()
         }
 
-        var args: MutableMap<String, Any>? = null
+        var args: MutableMap<String, Any?>? = null
         try {
             if (params == null || params == "") {
                 args = HashMap()
             } else {
-                args = jsonToMap(JSONObject("{$params}"))
+                //args = jsonToMap(JSONObject("{$params}"))
             }
-            args["Bugzilla_login"] = server.user
-            args["Bugzilla_password"] = server.password
+            //args["Bugzilla_login"] = server.user
+            //args["Bugzilla_password"] = server.password
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -62,7 +72,7 @@ class BugzillaTask(private val server: Server, private val method: String, priva
         try {
             response = client!!.call(method, arrayOf(args))
         } catch (e: XMLRPCException) {
-            Toast.makeText(Application.appContext, e.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(androidContext, e.message, Toast.LENGTH_SHORT).show()
 
             e.printStackTrace()
         }
@@ -75,18 +85,17 @@ class BugzillaTask(private val server: Server, private val method: String, priva
         try {
             // Add login info if needed
             if (server.hasUser()) {
-                if (params!!.length > 0) {
+                if (params!!.isNotEmpty()) {
                     params += ","
                 }
                 params += "'Bugzilla_login':'" + server.user + "','Bugzilla_password':'" + server.password + "'"
             }
 
             // Create the final array
-            val array: JSONArray
-            if (params!!.length > 0) {
-                array = JSONArray("[{$params}]")
+            val array: JSONArray = if (params!!.isNotEmpty()) {
+                JSONArray("[{$params}]")
             } else {
-                array = JSONArray()
+                JSONArray()
             }
 
             // Create the request
@@ -103,7 +112,7 @@ class BugzillaTask(private val server: Server, private val method: String, priva
             val entity = httpClient.execute(httpPost).entity
             response = EntityUtils.toString(entity)
         } catch (e: Exception) {
-            Toast.makeText(Application.appContext, e.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(androidContext, e.message, Toast.LENGTH_SHORT).show()
         }
 
         listener.doInBackground(response)

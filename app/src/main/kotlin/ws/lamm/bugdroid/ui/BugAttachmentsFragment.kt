@@ -11,9 +11,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 
-import me.johnmh.boogdroid.R
-import ws.lamm.bugdroid.general.Bug
-import ws.lamm.bugdroid.general.Server
+import ws.lamm.bugdroid.R
+import ws.lamm.bugdroid.bugzilla.Bug
+import ws.lamm.bugdroid.bugzilla.Server
 import ws.lamm.util.ImageLoader
 import ws.lamm.util.md5
 
@@ -56,16 +56,16 @@ class BugAttachmentsFragment : Fragment() {
     fun updateView(view: View) {
         val reporter = bug!!.reporter
         if (!TextUtils.isEmpty(reporter.avatarUrl)) {
-            ImageLoader.loadImage(reporter.avatarUrl, view.findViewById<View>(R.id.reporter_img) as ImageView)
+            //ImageLoader.loadImage(reporter.avatarUrl, view.findViewById<View>(R.id.reporter_img) as ImageView)
         } else {
-            ImageLoader.loadImage("http://www.gravatar.com/avatar/" + reporter.email.md5(), view.findViewById<View>(R.id.reporter_img) as ImageView)
+            //ImageLoader.loadImage("http://www.gravatar.com/avatar/" + reporter.email .md5(), view.findViewById<View>(R.id.reporter_img) as ImageView)
         }
         val assignee = bug!!.assignee
         if (assignee != null) {
             if (!TextUtils.isEmpty(assignee.avatarUrl)) {
-                ImageLoader.loadImage(assignee.avatarUrl, view.findViewById<View>(R.id.assignee_img) as ImageView)
+                //ImageLoader.loadImage(assignee.avatarUrl, view.findViewById<View>(R.id.assignee_img) as ImageView)
             } else {
-                ImageLoader.loadImage("http://www.gravatar.com/avatar/" + assignee.email.md5(), view.findViewById<View>(R.id.assignee_img) as ImageView)
+                //ImageLoader.loadImage("http://www.gravatar.com/avatar/" + assignee.email.md5(), view.findViewById<View>(R.id.assignee_img) as ImageView)
             }
         }
 

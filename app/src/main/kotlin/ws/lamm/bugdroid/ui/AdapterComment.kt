@@ -1,8 +1,7 @@
 package ws.lamm.bugdroid.ui
 
-import me.johnmh.boogdroid.R
-import ws.lamm.bugdroid.general.Comment
-import ws.lamm.bugdroid.ui.ui.ArrayContainsAdapter
+import ws.lamm.bugdroid.R
+import ws.lamm.bugdroid.bugzilla.Comment
 import ws.lamm.util.ImageLoader
 
 import android.content.Context
@@ -14,7 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import ws.lamm.util.md5
 
-class AdapterComment(context: Context, list: List<Comment>) : ArrayContainsAdapter<Comment>(context, R.layout.adapter_comment, list) {
+class AdapterComment(context: Context, list: MutableList<Comment>) : ArrayContainsAdapter<Comment>(context, R.layout.adapter_comment, list) {
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

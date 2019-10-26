@@ -6,16 +6,22 @@ import com.activeandroid.annotation.Table
 
 @Table(name = "Servers")
 class Server : Model() {
+
     @Column(name = "type")
-    var type: String? = null
+    var type: String = ""
+
     @Column(name = "name")
-    var name: String? = null
+    var name: String = ""
+
     @Column(name = "url")
     var url: String? = null
+
     @Column(name = "user")
     var user: String? = null
+
     @Column(name = "password")
     var password: String? = null
+
     @Column(name = "json")
     var json: Boolean? = null
 }

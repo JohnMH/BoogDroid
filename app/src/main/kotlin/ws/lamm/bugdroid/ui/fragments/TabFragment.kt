@@ -1,4 +1,4 @@
-package ws.lamm.bugdroid.ui.ui
+package ws.lamm.bugdroid.ui.fragments
 
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -9,26 +9,30 @@ import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-import me.johnmh.boogdroid.R
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.support.closestKodein
+import ws.lamm.bugdroid.R
 import ws.lamm.bugdroid.ui.BugAttachmentsFragment
 import ws.lamm.bugdroid.ui.BugAttributesFragment
 import ws.lamm.bugdroid.ui.BugInfoFragment
+import ws.lamm.bugdroid.ui.BugStatusFragment
 
-class TabFragment : Fragment() {
+class TabFragment : Fragment(), KodeinAware {
+
+    override val kodein by closestKodein()
+
     private var serverPos: Int = 0
     private var productId: Int = 0
     private var bugId: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        /**
-         * Inflate tab_layout and setup Views.
-         */
-        val x = inflater.inflate(R.layout.tab_layout, null)
-        tabLayout = x.findViewById<View>(R.id.tabs) as TabLayout
-        viewPager = x.findViewById<View>(R.id.viewpager) as ViewPager
+
+        val view = inflater.inflate(R.layout.tab_layout, null)
+        tabLayout = view.findViewById<View>(R.id.tabs) as TabLayout
+        viewPager = view.findViewById<View>(R.id.viewpager) as ViewPager
 
         val arguments = arguments
+
         if (arguments != null) {
             serverPos = arguments.getInt("server_position", -1)
             productId = arguments.getInt("product_id", -1)
@@ -38,9 +42,8 @@ class TabFragment : Fragment() {
             productId = -1
             bugId = -1
         }
-        /**
-         * Set an Apater for the View Pager
-         */
+
+
         viewPager.adapter = MyAdapter(childFragmentManager)
 
         /**
@@ -48,10 +51,9 @@ class TabFragment : Fragment() {
          * The setupWithViewPager dose't works without the runnable .
          * Maybe a Support Library Bug .
          */
-
         tabLayout.post { tabLayout.setupWithViewPager(viewPager) }
 
-        return x
+        return view
 
     }
 
