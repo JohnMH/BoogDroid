@@ -26,7 +26,6 @@ object AndroidSdk {
 
 object Libraries {
     private object Versions {
-        const val activeandroid = "3.1.0-SNAPSHOT"
         const val jetpack = "27.1.1"
         const val kodein = "6.4.1"
     }
@@ -44,9 +43,6 @@ object Libraries {
     }
 
     const val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-
-    const val axmlrpc = "com.github.gturri:axmlrpc:master"
-    const val activeandroid = "com.michaelpardo:activeandroid:${Versions.activeandroid}"
 }
 
 object TestLibraries {

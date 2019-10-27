@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- GENERAL -->
-    <string name="app_name">BoogDroid</string>
+    <string name="app_name">BugDroid</string>
     <string name="no_items">No elements.</string>
     <string name="invalid_product">Invalid product</string>
     <string name="invalid_bug">Invalid bug</string>

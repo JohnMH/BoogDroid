@@ -22,11 +22,11 @@ class BugzillaServer {
 
     var apiKey: String = ""
 
-    @Convert( converter = WebServiceConverter::class, dbType = Integer::class)
+    @Convert( converter = WebService.Converter::class, dbType = Integer::class)
     var webService: WebService = WebService.REST
 
-    constructor(type: String, name: String) {
-        this.type = type
-        this.name = name
-    }
+//    constructor(type: String, name: String) {
+//        this.type = type
+//        this.name = name
+//    }
 }

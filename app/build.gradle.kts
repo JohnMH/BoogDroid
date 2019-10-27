@@ -51,9 +51,6 @@ dependencies {
     implementation(Libraries.AndroidSupport.appcompat)
     implementation(Libraries.AndroidSupport.design)
     implementation(Libraries.AndroidSupport.recycleview)
-    implementation(Libraries.axmlrpc)
-
-    implementation(Libraries.activeandroid)
 
     implementation(Libraries.KodeinDI.genericJvm)
     implementation(Libraries.KodeinDI.frameworkAndroidCore)

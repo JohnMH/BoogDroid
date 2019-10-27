@@ -11,7 +11,6 @@ import org.kodein.di.android.support.androidSupportModule
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
-import ws.lamm.bugdroid.bugzilla.Server
 import ws.lamm.bugdroid.orm.BugzillaServer
 import ws.lamm.bugdroid.orm.MyObjectBox
 
@@ -30,23 +29,7 @@ class Application : Application(), KodeinAware {
     override fun onCreate() {
         super.onCreate()
 
-        val bugzillaServerBox : Box<BugzillaServer> by instance()
+        val bugzillaServerBox: Box<BugzillaServer> by instance()
 
-        try {
-            Server.servers.clear()
-
-            for (server in bugzillaServerBox.all) {
-                Server.servers.add(server)            }
-
-        } catch (e: Exception) {
-        }
-
-        appContext = applicationContext
-    }
-
-    companion object {
-
-        lateinit var appContext: Context
-            private set
     }
 }

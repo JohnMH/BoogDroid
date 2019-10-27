@@ -21,21 +21,18 @@ enum class WebService(val id: Int, val endpoint: String) {
 
 //    abstract fun searchBugs
 
-}
 
-class WebServiceConverter : PropertyConverter<WebService, Int> {
-    override fun convertToDatabaseValue(entityProperty: WebService): Int {
-        return entityProperty.id
-    }
+    class Converter : PropertyConverter<WebService, Int> {
+        override fun convertToDatabaseValue(entityProperty: WebService): Int {
+            return entityProperty.id
+        }
 
-    override fun convertToEntityProperty(databaseValue: Int): WebService {
-        for (webService in WebService.values()) {
-            if (webService.id == databaseValue) {
-                return webService
+        override fun convertToEntityProperty(databaseValue: Int): WebService {
+            return try {
+                values().first { it.id == databaseValue }
+            } catch (e: NoSuchElementException) {
+                REST
             }
         }
-        return WebService.REST
     }
-
 }
-
